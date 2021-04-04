@@ -27,8 +27,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 int main (int argc, char * const argv[])
 {
 	argc;
-	argv;
-	bool success = false;
+  argv;
+  bool success = false;
 	srand(1);
 
 	// initialize timers:------------------------------
@@ -43,7 +43,7 @@ int main (int argc, char * const argv[])
 		timer drawTimer;
 
 	// create a window:---------------------------------
-		success = OpenGLDevice::InitWindow();
+    success = OpenGLDevice::InitWindow();
 		assert(success);
 	
 	// create an emitter:-------------------------------
@@ -61,43 +61,44 @@ int main (int argc, char * const argv[])
 		transMatrix.setTransMatrix( &trans );
 
 		// multiply them together
-		Matrix tmp;
-		tmp = cameraMatrix * transMatrix;
-
+		Matrix offsetCameraMatrix;
+		offsetCameraMatrix = cameraMatrix * transMatrix;
+		
 	// counter for printing
 	int i = 0;
 
-	// main update loop... do this forever or until some breaks 
+	// main update loop... do this forever or until some breaks
 	while(OpenGLDevice::IsRunning())
 	{
 		// start update timer ---------------------------------------
 		updateTimer.tic();
 
-			// initialize the camera matrix
-			Matrix cameraMatrix;
-			cameraMatrix.setIdentMatrix();
+    // initialize the camera matrix
+    Matrix cameraMatrix;
+    cameraMatrix.setIdentMatrix();
 
-			// setup the translation matrix
-			Matrix transMatrix;
-			Vect4D trans(0.0f,3.0f,10.0f);
-			transMatrix.setTransMatrix( &trans );
+    // setup the translation matrix
+    Matrix transMatrix;
+    Vect4D trans(0.0f,3.0f,10.0f);
+    transMatrix.setTransMatrix( &trans );
 
-			// multiply them together
-			Matrix tmp;
-			tmp = cameraMatrix * transMatrix;
+    // multiply them together
+    Matrix tmp;
+    tmp = cameraMatrix * transMatrix;
 
-			// get the inverse matrix
-			Matrix inverseCameraMatrix;
-			tmp.Inverse(inverseCameraMatrix);
+    // get the inverse matrix
+    Matrix inverseCameraMatrix;
+    tmp.Inverse(inverseCameraMatrix);
 
 			// start draw... end draw (the draw updates)
 			OpenGLDevice::StartDraw();
 		
 			// set matrix to Model View
-			// push the inverseCameraMarix to stack
 			glMatrixMode(GL_MODELVIEW);
+			// push the inverseCameraMarix to stack
 			glLoadMatrixd(reinterpret_cast<double*>(&inverseCameraMatrix));
-			glPushMatrix(); // push the camera matrix
+			// push the camera matrix
+			glPushMatrix(); 
 
 			// update the emitter
 			emitter.update();
@@ -123,15 +124,15 @@ int main (int argc, char * const argv[])
 		// Love for Windows - allows the windows to behave to external events
 		EventHandler::ProcessEvents();
 
-		// update ouput every 50 times
 		i++;
-		if( i > 50 ) 
-		{
-			i = 0;
-			float updateTime = updateTimer.timeInSeconds();
-			float drawTime = drawTimer.timeInSeconds();
-			printf("LoopTime: update:%f ms  draw:%f ms  tot:%f\n",updateTime * 1000.0f, drawTime * 1000.0f, (updateTime + drawTime) *1000.0f);
-		}
+		// update output every 50 times
+		if( i > 50 )
+    {
+      i = 0;
+      float updateTime = updateTimer.timeInSeconds();
+      float drawTime = drawTimer.timeInSeconds();
+      printf("LoopTime: update:%f ms  draw:%f ms  tot:%f\n",updateTime * 1000.0f, drawTime * 1000.0f, (updateTime + drawTime) *1000.0f);
+    }
 	}
 	
     return 0;
