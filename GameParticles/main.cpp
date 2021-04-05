@@ -64,6 +64,10 @@ int main (int argc, char * const argv[])
   Matrix offsetCameraMatrix;
   offsetCameraMatrix = cameraMatrix * transMatrix;
 
+  // get the inverse matrix
+  Matrix inverseCameraMatrix;
+  offsetCameraMatrix.Inverse(inverseCameraMatrix);
+
   // counter for printing
   int i = 0;
   int j = 0;
@@ -74,23 +78,6 @@ int main (int argc, char * const argv[])
   {
     // start update timer ---------------------------------------
     updateTimer.tic();
-
-    // initialize the camera matrix
-    Matrix cameraMatrix;
-    cameraMatrix.setIdentMatrix();
-
-    // setup the translation matrix
-    Matrix transMatrix;
-    Vect4D trans(0.0f,3.0f,10.0f);
-    transMatrix.setTransMatrix( &trans );
-
-    // multiply them together
-    Matrix tmp;
-    tmp = cameraMatrix * transMatrix;
-
-    // get the inverse matrix
-    Matrix inverseCameraMatrix;
-    tmp.Inverse(inverseCameraMatrix);
 
     // start draw... end draw (the draw updates)
     OpenGLDevice::StartDraw();
