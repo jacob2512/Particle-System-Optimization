@@ -16,62 +16,64 @@ int main (int argc, char * const argv[]);
 // This is our Windows entry point.
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	nCmdShow;
-	lpCmdLine;
-	hPrevInstance;
-	OpenGLDevice::SetHInstance(hInstance);
-	main(__argc, __argv);
+  nCmdShow;
+  lpCmdLine;
+  hPrevInstance;
+  OpenGLDevice::SetHInstance(hInstance);
+  main(__argc, __argv);
 }
 
 // main program
 int main (int argc, char * const argv[])
 {
-	argc;
+  argc;
   argv;
   bool success = false;
-	srand(1);
+  srand(1);
 
-	// initialize timers:------------------------------
-		// Initialize timer
-		timer::initTimer();
+  // initialize timers:------------------------------
+    // Initialize timer
+  timer::initTimer();
 
-		// Create a global Timer
-		globalTimer::create();
+  // Create a global Timer
+  globalTimer::create();
 
-		// Create a timer objects
-		timer updateTimer;
-		timer drawTimer;
+  // Create a timer objects
+  timer updateTimer;
+  timer drawTimer;
 
-	// create a window:---------------------------------
-    success = OpenGLDevice::InitWindow();
-		assert(success);
-	
-	// create an emitter:-------------------------------
-		ParticleEmitter emitter;
+  // create a window:---------------------------------
+  success = OpenGLDevice::InitWindow();
+  assert(success);
 
-	// Get the inverse Camera Matrix:-------------------
+  // create an emitter:-------------------------------
+  ParticleEmitter emitter;
 
-		// initialize the camera matrix
-		Matrix cameraMatrix;
-		cameraMatrix.setIdentMatrix();
+  // Get the inverse Camera Matrix:-------------------
 
-		// setup the translation matrix
-		Matrix transMatrix;
-		Vect4D trans(0.0f,3.0f,10.0f);
-		transMatrix.setTransMatrix( &trans );
+    // initialize the camera matrix
+  Matrix cameraMatrix;
+  cameraMatrix.setIdentMatrix();
 
-		// multiply them together
-		Matrix offsetCameraMatrix;
-		offsetCameraMatrix = cameraMatrix * transMatrix;
-		
-	// counter for printing
-	int i = 0;
+  // setup the translation matrix
+  Matrix transMatrix;
+  Vect4D trans(0.0f,3.0f,10.0f);
+  transMatrix.setTransMatrix( &trans );
 
-	// main update loop... do this forever or until some breaks
-	while(OpenGLDevice::IsRunning())
-	{
-		// start update timer ---------------------------------------
-		updateTimer.tic();
+  // multiply them together
+  Matrix offsetCameraMatrix;
+  offsetCameraMatrix = cameraMatrix * transMatrix;
+
+  // counter for printing
+  int i = 0;
+  int j = 0;
+  float totUpdateTime = 0.0f;
+
+  // main update loop... do this forever or until some breaks
+  while(OpenGLDevice::IsRunning())
+  {
+    // start update timer ---------------------------------------
+    updateTimer.tic();
 
     // initialize the camera matrix
     Matrix cameraMatrix;
@@ -90,52 +92,65 @@ int main (int argc, char * const argv[])
     Matrix inverseCameraMatrix;
     tmp.Inverse(inverseCameraMatrix);
 
-			// start draw... end draw (the draw updates)
-			OpenGLDevice::StartDraw();
-		
-			// set matrix to Model View
-			glMatrixMode(GL_MODELVIEW);
-			// push the inverseCameraMarix to stack
-			glLoadMatrixd(reinterpret_cast<double*>(&inverseCameraMatrix));
-			// push the camera matrix
-			glPushMatrix(); 
+    // start draw... end draw (the draw updates)
+    OpenGLDevice::StartDraw();
 
-			// update the emitter
-			emitter.update();
+    // set matrix to Model View
+    glMatrixMode(GL_MODELVIEW);
+    // push the inverseCameraMarix to stack
+    glLoadMatrixd(reinterpret_cast<double*>(&inverseCameraMatrix));
+    // push the camera matrix
+    glPushMatrix();
 
-		// stop update timer: -----------------------------------------
-		updateTimer.toc();
+    // update the emitter
+    emitter.update();
 
-		// start draw timer: ----------------------------------------
-		drawTimer.tic();
+    // stop update timer: -----------------------------------------
+    updateTimer.toc();
 
-			// draw particles
-			emitter.draw();
-		
-			// pop matrix - needs to correspond to previous push
-			glPopMatrix();
+    // start draw timer: ----------------------------------------
+    drawTimer.tic();
 
-		// stop draw timer: -----------------------------------------
-		drawTimer.toc();
+    // draw particles
+    emitter.draw();
 
-		// finish draw update
-		OpenGLDevice::EndDraw();
+    // pop matrix - needs to correspond to previous push
+    glPopMatrix();
 
-		// Love for Windows - allows the windows to behave to external events
-		EventHandler::ProcessEvents();
+    // stop draw timer: -----------------------------------------
+    drawTimer.toc();
 
-		i++;
-		// update output every 50 times
-		if( i > 50 )
+    // finish draw update
+    OpenGLDevice::EndDraw();
+
+    // Love for Windows - allows the windows to behave to external events
+    EventHandler::ProcessEvents();
+
+    i++;
+    // update output every 50 times
+    if( i > 50 )
     {
       i = 0;
+      j++;
       float updateTime = updateTimer.timeInSeconds();
       float drawTime = drawTimer.timeInSeconds();
-      printf("LoopTime: update:%f ms  draw:%f ms  tot:%f\n",updateTime * 1000.0f, drawTime * 1000.0f, (updateTime + drawTime) *1000.0f);
+      totUpdateTime += updateTime;
+
+      if (j > 60)
+      {
+        float avgUpdateTime = totUpdateTime / j;
+        j = 0;
+        totUpdateTime = 0.0f;
+        printf("LoopTime: update:%f ms  draw:%f ms  tot:%f ms avg:%f ms\n", updateTime * 1000.0f, drawTime * 1000.0f, (updateTime + drawTime) * 1000.0f, avgUpdateTime * 1000.0f);
+      }
+      else
+      {
+        printf("LoopTime: update:%f ms  draw:%f ms  tot:%f ms\n", updateTime * 1000.0f, drawTime * 1000.0f, (updateTime + drawTime) * 1000.0f);
+      }
     }
-	}
-	
-    return 0;
+  }
+
+  return 0;
 }
 
 
