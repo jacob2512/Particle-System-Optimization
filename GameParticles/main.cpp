@@ -119,8 +119,9 @@ int main (int argc, char * const argv[])
     {
       i = 0;
       j++;
-      float updateTime = updateTimer.timeInSeconds();
-      float drawTime = drawTimer.timeInSeconds();
+      const float updateTime = updateTimer.timeInSeconds() * 1000.0f;
+      const float drawTime = drawTimer.timeInSeconds() * 1000.0f;
+      const float totTime = updateTime + drawTime;
       totUpdateTime += updateTime;
 
       if (j > 60)
@@ -128,11 +129,11 @@ int main (int argc, char * const argv[])
         float avgUpdateTime = totUpdateTime / j;
         j = 0;
         totUpdateTime = 0.0f;
-        printf("LoopTime: update:%f ms  draw:%f ms  tot:%f ms avg:%f ms\n", updateTime * 1000.0f, drawTime * 1000.0f, (updateTime + drawTime) * 1000.0f, avgUpdateTime * 1000.0f);
+        printf("LoopTime: update:%f ms  draw:%f ms  tot:%f ms avg:%f ms\n", updateTime, drawTime, totTime, avgUpdateTime);
       }
       else
       {
-        printf("LoopTime: update:%f ms  draw:%f ms  tot:%f ms\n", updateTime * 1000.0f, drawTime * 1000.0f, (updateTime + drawTime) * 1000.0f);
+        printf("LoopTime: update:%f ms  draw:%f ms  tot:%f ms\n", updateTime, drawTime, totTime);
       }
     }
   }
