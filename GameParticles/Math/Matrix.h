@@ -12,7 +12,7 @@ class Matrix
 public:
 
 	// local enumerations
-	enum MatrixRowEnum
+	const enum MatrixRowEnum
 	{
 		MATRIX_ROW_0,
 		MATRIX_ROW_1,

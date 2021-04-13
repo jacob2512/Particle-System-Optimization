@@ -297,83 +297,48 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
 
 	// Ses it's ugly - I didn't write this so don't bitch at me
 	// Sometimes code like this is inside real commerical code ( so now you know how it feels )
-	
-	// x - variance
-	double var = static_cast<double>(rand() % 1000) * 0.001f;
-	double sign = static_cast<double>(rand() % 2);
-	double *t_pos = reinterpret_cast<double*>(&pos);
-	double *t_var = &pos_variance[x];
-	if(sign == 0)
-	{
-		var *= -1.0;
-	}
-	*t_pos += *t_var * var;
 
-	// y - variance
-	var = static_cast<double>(rand() % 1000) * 0.001f;
-	sign = static_cast<double>(rand() % 2);
-	t_pos++;
-	t_var++;
-	if(sign == 0)
+  double* t_pos = reinterpret_cast<double*>(&pos);
+  double* t_var = &pos_variance[x];
+  double var = static_cast<double>(rand() % 1000) * 0.001f;
+  double sign = static_cast<double>(rand() % 2);
+
+	for (int i=0; i<7; i++)
 	{
-		var *= -1.0;
+    var = static_cast<double>(rand() % 1000) * 0.001f;
+    sign = static_cast<double>(rand() % 2);
+		
+		if (i == 3)
+		{
+      t_pos = &vel[x];
+      t_var = &vel_variance[x];
+		}
+		else
+		{
+      t_pos++;
+      t_var++;
+		}
+
+		if (i == 6)
+		{
+			var *= 2.0f;
+		}
+
+    if (sign == 0)
+    {
+      var *= -1.0;
+    }
+
+    if (i == 6)
+    {
+      var *= 2.0f;
+      sc = sc * var;
+    }
+    else
+    {
+      *t_pos += *t_var * var;
+    }
 	}
-	*t_pos += *t_var * var;
-	
-	// z - variance
-	var = static_cast<double>(rand() % 1000) * 0.001f;
-	sign = static_cast<double>(rand() % 2);
-	t_pos++;
-	t_var++;
-	if(sign == 0)
-	{
-		var *= -1.0;
-	}
-	*t_pos += *t_var * var;
-	
-	var = static_cast<double>(rand() % 1000) * 0.001f;
-	sign = static_cast<double>(rand() % 2);
-	
-	// x  - add velocity
-	t_pos = &vel[x];
-	t_var = &vel_variance[x];
-	if(sign == 0)
-	{
-		var *= -1.0;
-	}
-	*t_pos += *t_var * var;
-	
-	// y - add velocity
-	var = static_cast<double>(rand() % 1000) * 0.001f;
-	sign = static_cast<double>(rand() % 2);
-	t_pos++;
-	t_var++;
-	if(sign == 0)
-	{
-		var *= -1.0;
-	}
-	*t_pos += *t_var * var;
-	
-	// z - add velocity
-	var = static_cast<double>(rand() % 1000) * 0.001f;
-	sign = static_cast<double>(rand() % 2);
-	t_pos++;
-	t_var++;
-	if(sign == 0)
-	{
-		var *= -1.0;
-	}
-	*t_pos += *t_var * var;
-	
-	// correct the sign
-	var = 2.0f * static_cast<double>(rand() % 1000) * 0.001f;
-	sign = static_cast<double>(rand() % 2);
-	
-	if(sign == 0)
-	{
-		var *= -1.0;
-	}
-	sc = sc * var;
 }
 
 

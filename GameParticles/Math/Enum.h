@@ -1,6 +1,6 @@
 #pragma once
 
-enum VECT_ENUM
+const enum VECT_ENUM
 {
 	x = 0,
 	y = 1,
@@ -8,7 +8,7 @@ enum VECT_ENUM
 	w = 3
 };
 
-enum INDEX_ENUM  // used for matrices
+const enum INDEX_ENUM  // used for matrices
 {
 	m0 = 0,
 	m1 = 1,
