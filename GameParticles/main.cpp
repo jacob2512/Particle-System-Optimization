@@ -28,7 +28,6 @@ int main (int argc, char * const argv[])
 {
   argc;
   argv;
-  bool success = false;
   srand(1);
 
   // initialize timers:------------------------------
@@ -43,7 +42,7 @@ int main (int argc, char * const argv[])
   timer drawTimer;
 
   // create a window:---------------------------------
-  success = OpenGLDevice::InitWindow();
+  const bool success = OpenGLDevice::InitWindow();
   assert(success);
 
   // create an emitter:-------------------------------

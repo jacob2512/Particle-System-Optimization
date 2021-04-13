@@ -23,12 +23,13 @@ public:
 
 private:
 	
-	Vect4D	start_position;
-	Vect4D	start_velocity;
+	const Vect4D	start_position;
+	const Vect4D	start_velocity;
 	
-	double	max_life;
-	int		max_particles;
-	double	spawn_frequency;
+	const double	max_life;
+	const int		max_particles;
+	const double	spawn_frequency;
+
 	double	last_spawn;
 	double	last_loop;
 	int		last_active_particle;
@@ -37,9 +38,9 @@ private:
 	int bufferCount;
 	Vect4D	vel_variance;
 	Vect4D	pos_variance;
-	double	scale_variance;
+	const double	scale_variance;
 	std::list<Particle> drawBuffer;
 	Particle *headParticle;
-	std::list<Particle> particle_list;
+	const std::list<Particle> particle_list;
 
 };
