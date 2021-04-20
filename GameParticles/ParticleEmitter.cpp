@@ -25,18 +25,15 @@ static const double squareVertices[] =
 
 
 ParticleEmitter::ParticleEmitter()
-:	start_position( 0.0, 0.0, 0.0 ),
-	start_velocity( 0.0, 1.0, 0.0), 
-	max_life( MAX_LIFE ),
+:	max_life( MAX_LIFE ),
 	max_particles( NUM_PARTICLES ),
 	spawn_frequency( 0.0000001 ),
 	last_spawn( globalTimer::getTimerInSec() ),
 	last_loop(  globalTimer::getTimerInSec() ),
 	last_active_particle( -1 ),
-	particle_list( NUM_PARTICLES ),
-	vel_variance( 1.0, 4.0, 0.4 ),
-	pos_variance( 1.0, 1.0, 1.0 ),
-	scale_variance( 2.5),
+  particle_list( NUM_PARTICLES ),
+  vel_variance( 1.0, 4.0, 0.4 ),
+  pos_variance( 1.0, 1.0, 1.0 ),
 	headParticle(0)
 {
 	// nothing to do
@@ -180,23 +177,33 @@ void ParticleEmitter::removeParticleFromList( Particle *p )
 	// make sure we are not screwed with a null pointer
 	assert(p);
 
-	if( p->prev == 0 && p->next == 0  )
-	{ // only one on the list
-		this->headParticle = 0;
+	if (p->prev == 0)
+	{
+		if (p->next == 0)
+    {
+			// only one on the list
+      this->headParticle = 0;
+		}
+		else
+		{
+      // first on the list
+      p->next->prev = 0;
+      this->headParticle = p->next;
+		}
 	}
-	else if( p->prev == 0 && p->next != 0  )
-	{ // first on the list
-		p->next->prev = 0;
-		this->headParticle = p->next;
-	}
-	else if( p->prev!= 0 && p->next == 0 )
-	{ // last on the list 
-		p->prev->next = 0;
-	}
-	else//( p->next != 0  && p->prev !=0 )
-	{ // middle of the list
-		p->prev->next = p->next;
-		p->next->prev = p->prev;
+	else //if (p->prev != 0)
+	{
+		if (p->next == 0)
+    {
+			// last on the list 
+      p->prev->next = 0;
+		}
+		else
+		{
+      // middle of the list
+      p->prev->next = p->next;
+      p->next->prev = p->prev;
+		}
 	}
 	
 	// bye bye
@@ -276,15 +283,9 @@ void ParticleEmitter::draw()
 		
 		// clears or flushes some internal setting, used in debug, but is need for performance reasons
 		// magic...  really it's magic.
-		GLenum glError = glGetError();
-		glError;
+		glGetError();
 	}
 
-	// delete the buffer
-	for( size_t i = 0; i < drawBuffer.size(); i++ )
-	{
-		drawBuffer.pop_back();
-	}
 
 	// done with buffer, clear it.
 	drawBuffer.clear();
