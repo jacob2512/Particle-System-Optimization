@@ -3,6 +3,7 @@
 #include "Math\Matrix.h"
 #include "Math\Vect4D.h"
 #include "Particle.h"
+#include "Settings.h"
 
 #include <list>
 
@@ -26,9 +27,9 @@ private:
 	const Vect4D	start_position = Vect4D(0.0, 0.0, 0.0);
 	const Vect4D	start_velocity = Vect4D(0.0, 1.0, 0.0);
 	
-	const double	max_life;
-	const int		max_particles;
-	const double	spawn_frequency;
+	const double	max_life = MAX_LIFE;
+	const int		max_particles = NUM_PARTICLES;
+	const double	spawn_frequency = 0.0000001;
 
 	double	last_spawn;
 	double	last_loop;
@@ -41,6 +42,5 @@ private:
 	const double	scale_variance = 2.5;
 	std::list<Particle> drawBuffer;
 	Particle *headParticle;
-	const std::list<Particle> particle_list;
 
 };

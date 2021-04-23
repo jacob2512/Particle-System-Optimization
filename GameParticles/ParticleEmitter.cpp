@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "ParticleEmitter.h"
-#include "Settings.h"
 
 static const unsigned char squareColors[] = 
 {
@@ -25,13 +24,9 @@ static const double squareVertices[] =
 
 
 ParticleEmitter::ParticleEmitter()
-:	max_life( MAX_LIFE ),
-	max_particles( NUM_PARTICLES ),
-	spawn_frequency( 0.0000001 ),
-	last_spawn( globalTimer::getTimerInSec() ),
+:	last_spawn( globalTimer::getTimerInSec() ),
 	last_loop(  globalTimer::getTimerInSec() ),
 	last_active_particle( -1 ),
-  particle_list( NUM_PARTICLES ),
   vel_variance( 1.0, 4.0, 0.4 ),
   pos_variance( 1.0, 1.0, 1.0 ),
 	headParticle(0)
