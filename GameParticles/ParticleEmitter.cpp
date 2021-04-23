@@ -214,7 +214,7 @@ void ParticleEmitter::draw()
 	// get the camera matrix from OpenGL
 	glGetDoublev(GL_MODELVIEW_MATRIX, reinterpret_cast<double*>(&cameraMatrix));
 
-	// iterate throught the list of particles
+	// iterate throughout the list of particles
 	std::list<Particle>::iterator it;
 	for( it = drawBuffer.begin(); it != drawBuffer.end(); ++it)
 	{
@@ -225,7 +225,7 @@ void ParticleEmitter::draw()
 		Vect4D camPosVect;
 		cameraMatrix.get( Matrix::MATRIX_ROW_3, &camPosVect );
 
-		// OpenGL goo... don't worrry about this
+		// OpenGL goo... don't worry about this
 		glVertexPointer(3, GL_DOUBLE, 0, squareVertices);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, squareColors);
@@ -294,15 +294,15 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
 	// Ses it's ugly - I didn't write this so don't bitch at me
 	// Sometimes code like this is inside real commerical code ( so now you know how it feels )
 
-  double* t_pos = reinterpret_cast<double*>(&pos);
-  double* t_var = &pos_variance[x];
-  double var = static_cast<double>(rand() % 1000) * 0.001f;
-  double sign = static_cast<double>(rand() % 2);
+  float* t_pos = reinterpret_cast<float*>(&pos);
+  float* t_var = &pos_variance[x];
+	float var = static_cast<float>(rand() % 1000) * 0.001f;
+	float sign = static_cast<float>(rand() % 2);
 
 	for (int i=0; i<7; i++)
 	{
-    var = static_cast<double>(rand() % 1000) * 0.001f;
-    sign = static_cast<double>(rand() % 2);
+    var = static_cast<float>(rand() % 1000) * 0.001f;
+    sign = static_cast<float>(rand() % 2);
 		
 		if (i == 3)
 		{

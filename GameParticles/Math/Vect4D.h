@@ -13,27 +13,27 @@ class Matrix;
 class Vect4D
 {
 public:
-	friend class Matrix;
+  friend class Matrix;
 
-	Vect4D();	
-	Vect4D( double tx, double ty, double tz, double tw = 1.0f );
-	~Vect4D();
+  Vect4D();
+  Vect4D(float tx, float ty, float tz, float tw = 1.0f );
+  ~Vect4D();
 
-	void norm( Vect4D &out );
-	void set( double tx, double ty, double tz, double tw = 1.0f);
-	
-	Vect4D operator + ( Vect4D t );
-	Vect4D operator - ( Vect4D t );
-	Vect4D operator * ( double scale );
+  void norm( Vect4D &out );
+  void set(float tx, float ty, float tz, float tw = 1.0f);
 
-	void Cross(Vect4D &vin, Vect4D &vout);
+  Vect4D operator + ( Vect4D t );
+  Vect4D operator - ( Vect4D t );
+  Vect4D operator * ( float scale );
 
-	double &operator[]( VECT_ENUM e);
+  void Cross(Vect4D &vin, Vect4D &vout);
+
+  float &operator[]( VECT_ENUM e);
 
 
 private:
-	double x;
-	double y;
-	double z;
-	double w;
+  float x;
+  float y;
+  float z;
+  float w;
 };
