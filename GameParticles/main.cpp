@@ -10,7 +10,7 @@
 
 
 // WIN32 - prototype
-int main (int argc, char * const argv[]);
+int main(int argc, char* const argv[]);
 
 // WinMain required by windows for all win32 applications.
 // This is our Windows entry point.
@@ -24,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 }
 
 // main program
-int main (int argc, char * const argv[])
+int main(int argc, char* const argv[])
 {
   argc;
   argv;
@@ -56,8 +56,8 @@ int main (int argc, char * const argv[])
 
   // setup the translation matrix
   Matrix transMatrix;
-  Vect4D trans(0.0f,3.0f,10.0f);
-  transMatrix.setTransMatrix( &trans );
+  Vect4D trans(0.0f, 3.0f, 10.0f);
+  transMatrix.setTransMatrix(&trans);
 
   // multiply them together
   Matrix offsetCameraMatrix;
@@ -73,7 +73,7 @@ int main (int argc, char * const argv[])
   float totUpdateTime = 0.0f;
 
   // main update loop... do this forever or until some breaks
-  while(OpenGLDevice::IsRunning())
+  while (OpenGLDevice::IsRunning())
   {
     // start update timer ---------------------------------------
     updateTimer.tic();
@@ -114,7 +114,7 @@ int main (int argc, char * const argv[])
 
     i++;
     // update output every 50 times
-    if( i > 50 )
+    if (i > 50)
     {
       i = 0;
       j++;
