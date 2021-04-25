@@ -27,8 +27,8 @@ ParticleEmitter::ParticleEmitter()
   : last_spawn(globalTimer::getTimerInSec()),
   last_loop(globalTimer::getTimerInSec()),
   last_active_particle(-1),
-  vel_variance(1.0, 4.0, 0.4),
-  pos_variance(1.0, 1.0, 1.0),
+  vel_variance(1.0f, 4.0f, 0.4f),
+  pos_variance(1.0f, 1.0f, 1.0f),
   headParticle(0)
 {
   // nothing to do
@@ -72,10 +72,10 @@ void ParticleEmitter::SpawnParticle()
 void ParticleEmitter::update()
 {
   // get current time
-  double current_time = globalTimer::getTimerInSec();
+  float current_time = globalTimer::getTimerInSec();
 
   // spawn particles
-  double time_elapsed = current_time - last_spawn;
+  float time_elapsed = current_time - last_spawn;
 
   // update
   while (spawn_frequency < time_elapsed)
@@ -212,7 +212,7 @@ void ParticleEmitter::draw()
   Matrix cameraMatrix;
 
   // get the camera matrix from OpenGL
-  glGetDoublev(GL_MODELVIEW_MATRIX, reinterpret_cast<double*>(&cameraMatrix));
+  glGetFloatv(GL_MODELVIEW_MATRIX, reinterpret_cast<float*>(&cameraMatrix));
 
   // iterate throughout the list of particles
   std::list<Particle>::iterator it;
@@ -239,13 +239,6 @@ void ParticleEmitter::draw()
     Matrix rotParticle;
     rotParticle.setRotZMatrix(it->rotation);
 
-    // pivot Point
-    Matrix pivotParticle;
-    Vect4D pivotVect;
-    pivotVect.set(1.0, 0.0, 50.0);
-    pivotVect = pivotVect * 20.0 * it->life;
-    pivotParticle.setTransMatrix(&pivotVect);
-
     // scale Matrix
     Matrix scaleMatrix;
     scaleMatrix.setScaleMatrix(&it->scale);
@@ -254,7 +247,7 @@ void ParticleEmitter::draw()
     tmp = scaleMatrix * transCamera * transParticle * rotParticle * scaleMatrix;
 
     // set the transformation matrix
-    glLoadMatrixd(reinterpret_cast<double*>(&(tmp)));
+    glLoadMatrixf(reinterpret_cast<float*>(&(tmp)));
 
     // squirrel away matrix for next update
     it->curr_Row0 = tmp.get(Matrix::MATRIX_ROW_0);
@@ -262,7 +255,7 @@ void ParticleEmitter::draw()
     it->curr_Row2 = tmp.get(Matrix::MATRIX_ROW_2);
     it->curr_Row3 = tmp.get(Matrix::MATRIX_ROW_3);
 
-    // draw the trangle strip
+    // draw the triangle strip
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     // difference vector
@@ -287,8 +280,8 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
 {
   // Add some randomness...
 
-  // Ses it's ugly - I didn't write this so don't bitch at me
-  // Sometimes code like this is inside real commerical code ( so now you know how it feels )
+  // Yes it's ugly - I didn't write this so don't bitch at me
+  // Sometimes code like this is inside real commercial code ( so now you know how it feels )
 
   float* t_pos = reinterpret_cast<float*>(&pos);
   float* t_var = &pos_variance[x];

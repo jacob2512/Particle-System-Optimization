@@ -80,7 +80,7 @@ int main(int argc, char* const argv[])
     // set matrix to Model View
     glMatrixMode(GL_MODELVIEW);
     // push the inverseCameraMarix to stack
-    glLoadMatrixd(reinterpret_cast<double*>(&offsetCameraMatrix.Inverse()));
+    glLoadMatrixf(reinterpret_cast<float*>(&offsetCameraMatrix.Inverse()));
     // push the camera matrix
     glPushMatrix();
 

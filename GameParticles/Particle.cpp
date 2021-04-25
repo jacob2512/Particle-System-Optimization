@@ -3,14 +3,13 @@
 
 Particle::Particle()
 {
-  // construtor
+  // constructor
   this->life = 0.0f;
   this->position.set(0.0f, 0.0f, 0.0f);
   this->velocity.set(0.0f, 0.0f, 0.0f);
   this->scale.set(1.0f, 1.0f, 1.0f);
   this->rotation = 0.0f;
   this->rotation_velocity = 0.5f;
-
 }
 
 Particle::~Particle()
@@ -30,7 +29,7 @@ void Particle::CopyDataOnly(Particle* p)
   this->life = p->life;
 }
 
-void Particle::Update(const double& time_elapsed)
+void Particle::Update(const float& time_elapsed)
 {
   // Rotate the matrices
   Vect4D tmp_Row0;
@@ -56,7 +55,7 @@ void Particle::Update(const double& time_elapsed)
   tmp.set(Matrix::MATRIX_ROW_2, &this->diff_Row2);
   tmp.set(Matrix::MATRIX_ROW_3, &this->diff_Row3);
 
-  double scale = tmp.Determinant();
+  float scale = tmp.Determinant();
 
   // serious math below - magic secret sauce
   life += time_elapsed;
@@ -65,14 +64,14 @@ void Particle::Update(const double& time_elapsed)
   Vect4D v(3, 4, 0);
   position.Cross(z_axis, v);
   v.norm(v);
-  position = position + v * 0.05 * life;
+  position = position + v * 0.05f * life;
 
   if (scale > 1.0)
   {
-    scale = 1.0 / scale;
+    scale = 1.0f / scale;
   };
 
-  rotation = rotation + scale + rotation_velocity * time_elapsed * 2.01;
+  rotation = rotation + scale + rotation_velocity * time_elapsed * 2.01f;
 }
 
 
