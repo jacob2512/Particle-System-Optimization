@@ -221,10 +221,6 @@ void ParticleEmitter::draw()
     //Temporary matrix
     Matrix tmp;
 
-    // get the position from this matrix
-    Vect4D camPosVect;
-    cameraMatrix.get(Matrix::MATRIX_ROW_3, &camPosVect);
-
     // OpenGL goo... don't worry about this
     glVertexPointer(3, GL_DOUBLE, 0, squareVertices);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -233,7 +229,7 @@ void ParticleEmitter::draw()
 
     // camera position
     Matrix transCamera;
-    transCamera.setTransMatrix(&camPosVect);
+    transCamera.setTransMatrix(&cameraMatrix.get(Matrix::MATRIX_ROW_3));
 
     // particle position
     Matrix transParticle;
@@ -261,10 +257,10 @@ void ParticleEmitter::draw()
     glLoadMatrixd(reinterpret_cast<double*>(&(tmp)));
 
     // squirrel away matrix for next update
-    tmp.get(Matrix::MATRIX_ROW_0, &it->curr_Row0);
-    tmp.get(Matrix::MATRIX_ROW_1, &it->curr_Row1);
-    tmp.get(Matrix::MATRIX_ROW_2, &it->curr_Row2);
-    tmp.get(Matrix::MATRIX_ROW_3, &it->curr_Row3);
+    it->curr_Row0 = tmp.get(Matrix::MATRIX_ROW_0);
+    it->curr_Row1 = tmp.get(Matrix::MATRIX_ROW_1);
+    it->curr_Row2 = tmp.get(Matrix::MATRIX_ROW_2);
+    it->curr_Row3 = tmp.get(Matrix::MATRIX_ROW_3);
 
     // draw the trangle strip
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

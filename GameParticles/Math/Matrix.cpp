@@ -55,7 +55,7 @@ Matrix::Matrix(Matrix& t)
 
 Matrix::~Matrix()
 {
-  // nothign to delete
+  // nothing to delete
 }
 
 void Matrix::setIdentMatrix()
@@ -204,41 +204,44 @@ double& Matrix::operator[](INDEX_ENUM e)
 }
 
 
-void Matrix::get(MatrixRowEnum row, Vect4D* t)
-{ // get a row of the matrix
+Vect4D Matrix::get(MatrixRowEnum row)
+{ 
+  Vect4D t;
+  // get a row of the matrix
   switch (row)
   {
   case MATRIX_ROW_0:
-    t->x = this->m0;
-    t->y = this->m1;
-    t->z = this->m2;
-    t->w = this->m3;
+    t.x = this->m0;
+    t.y = this->m1;
+    t.z = this->m2;
+    t.w = this->m3;
     break;
 
   case MATRIX_ROW_1:
-    t->x = this->m4;
-    t->y = this->m5;
-    t->z = this->m6;
-    t->w = this->m7;
+    t.x = this->m4;
+    t.y = this->m5;
+    t.z = this->m6;
+    t.w = this->m7;
     break;
 
   case MATRIX_ROW_2:
-    t->x = this->m8;
-    t->y = this->m9;
-    t->z = this->m10;
-    t->w = this->m11;
+    t.x = this->m8;
+    t.y = this->m9;
+    t.z = this->m10;
+    t.w = this->m11;
     break;
 
   case MATRIX_ROW_3:
-    t->x = this->m12;
-    t->y = this->m13;
-    t->z = this->m14;
-    t->w = this->m15;
+    t.x = this->m12;
+    t.y = this->m13;
+    t.z = this->m14;
+    t.w = this->m15;
     break;
 
   default:
     assert(0);
   }
+  return t;
 }
 
 
@@ -515,13 +518,13 @@ Matrix Matrix::GetAdjugate()
   return tmp;
 }
 
-void Matrix::Inverse(Matrix& out)
+Matrix Matrix::Inverse()
 {
   Matrix tmp;
   double det = Determinant();
   if (fabs(det) < 0.0001)
   {
-    // do nothing, Matrix is not invertable
+    // do nothing, Matrix is not invertible
   }
   else
   {
@@ -529,7 +532,7 @@ void Matrix::Inverse(Matrix& out)
     tmp /= det;
   }
 
-  out = tmp;
+  return tmp;
 }
 
 void Matrix::setScaleMatrix(Vect4D* scale)
@@ -539,7 +542,6 @@ void Matrix::setScaleMatrix(Vect4D* scale)
   //	{	0		0		sz		0	}
   //	{	0		0		0		1	}
 
-  Matrix tmp;
   this->m0 = scale->x;
   this->m1 = 0;
   this->m2 = 0;
@@ -568,28 +570,25 @@ void Matrix::setRotZMatrix(double az)
   //	{	0		0		1		0	}
   //	{	0		0		0		1	}
 
-  Matrix tmp;
-  tmp.m0 = cos(az);
-  tmp.m1 = -sin(az);
-  tmp.m2 = 0;
-  tmp.m3 = 0;
+  this->m0 = cos(az);
+  this->m1 = -sin(az);
+  this->m2 = 0;
+  this->m3 = 0;
 
-  tmp.m4 = sin(az);
-  tmp.m5 = cos(az);
-  tmp.m6 = 0;
-  tmp.m7 = 0;
+  this->m4 = sin(az);
+  this->m5 = cos(az);
+  this->m6 = 0;
+  this->m7 = 0;
 
-  tmp.m8 = 0;
-  tmp.m9 = 0;
-  tmp.m10 = 1;
-  tmp.m11 = 0;
+  this->m8 = 0;
+  this->m9 = 0;
+  this->m10 = 1;
+  this->m11 = 0;
 
-  tmp.m12 = 0;
-  tmp.m13 = 0;
-  tmp.m14 = 0;
-  tmp.m15 = 1;
-
-  *this = tmp;
+  this->m12 = 0;
+  this->m13 = 0;
+  this->m14 = 0;
+  this->m15 = 1;
 }
 
 // End of file

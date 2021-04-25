@@ -25,7 +25,7 @@ public:
   ~Matrix();
 
   void set(MatrixRowEnum row, Vect4D* t);
-  void get(MatrixRowEnum row, Vect4D* vOut);
+  Vect4D get(MatrixRowEnum row);
 
   void setIdentMatrix();
   void setTransMatrix(Vect4D* t);
@@ -42,7 +42,7 @@ public:
   Matrix GetAdjugate();
   Matrix& Matrix::operator/=(double t);
 
-  void Matrix::Inverse(Matrix& out);
+  Matrix Matrix::Inverse();
 
 private:
 
