@@ -24,8 +24,10 @@ public:
 
 private:
 
+  const float life = 0.0f;
   const Vect4D	start_position = Vect4D(0.0f, 0.0f, 0.0f);
   const Vect4D	start_velocity = Vect4D(0.0f, 1.0f, 0.0f);
+  const Vect4D  scale = Vect4D(1.0f, 1.0f, 1.0f, 1.0f);
 
   const float	max_life = MAX_LIFE;
   const int		max_particles = NUM_PARTICLES;

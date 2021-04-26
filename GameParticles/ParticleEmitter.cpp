@@ -52,10 +52,10 @@ void ParticleEmitter::SpawnParticle()
     Particle* newParticle = new Particle();
 
     // initialize the particle
-    newParticle->life = 0.0f;
+    newParticle->life = life;
     newParticle->position = start_position;
     newParticle->velocity = start_velocity;
-    newParticle->scale = Vect4D(1.0, 1.0, 1.0, 1.0);
+    newParticle->scale = scale;
 
     // apply the variance
     this->Execute(newParticle->position, newParticle->velocity, newParticle->scale);
@@ -211,6 +211,11 @@ void ParticleEmitter::draw()
   // need to get the position
   Matrix cameraMatrix;
 
+  Matrix transCamera;
+  Matrix transParticle;
+  Matrix rotParticle;
+  Matrix scaleMatrix;
+
   // get the camera matrix from OpenGL
   glGetFloatv(GL_MODELVIEW_MATRIX, reinterpret_cast<float*>(&cameraMatrix));
 
@@ -218,9 +223,6 @@ void ParticleEmitter::draw()
   std::list<Particle>::iterator it;
   for (it = drawBuffer.begin(); it != drawBuffer.end(); ++it)
   {
-    //Temporary matrix
-    Matrix tmp;
-
     // OpenGL goo... don't worry about this
     glVertexPointer(3, GL_DOUBLE, 0, squareVertices);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -228,42 +230,26 @@ void ParticleEmitter::draw()
     glEnableClientState(GL_COLOR_ARRAY);
 
     // camera position
-    Matrix transCamera;
     transCamera.setTransMatrix(&cameraMatrix.get(Matrix::MATRIX_ROW_3));
 
     // particle position
-    Matrix transParticle;
     transParticle.setTransMatrix(&it->position);
 
     // rotation matrix
-    Matrix rotParticle;
     rotParticle.setRotZMatrix(it->rotation);
 
     // scale Matrix
-    Matrix scaleMatrix;
     scaleMatrix.setScaleMatrix(&it->scale);
 
     // total transformation of particle
+    Matrix tmp;
     tmp = scaleMatrix * transCamera * transParticle * rotParticle * scaleMatrix;
 
     // set the transformation matrix
     glLoadMatrixf(reinterpret_cast<float*>(&(tmp)));
 
-    // squirrel away matrix for next update
-    it->curr_Row0 = tmp.get(Matrix::MATRIX_ROW_0);
-    it->curr_Row1 = tmp.get(Matrix::MATRIX_ROW_1);
-    it->curr_Row2 = tmp.get(Matrix::MATRIX_ROW_2);
-    it->curr_Row3 = tmp.get(Matrix::MATRIX_ROW_3);
-
     // draw the triangle strip
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-    // difference vector
-    it->diff_Row0 = it->curr_Row0 - it->prev_Row0;
-    it->diff_Row1 = it->curr_Row1 - it->prev_Row1;
-    it->diff_Row2 = it->curr_Row2 - it->prev_Row2;
-    it->diff_Row3 = it->curr_Row3 - it->prev_Row3;
-
 
     // clears or flushes some internal setting, used in debug, but is need for performance reasons
     // magic...  really it's magic.
