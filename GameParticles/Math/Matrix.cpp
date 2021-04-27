@@ -570,13 +570,13 @@ void Matrix::setRotZMatrix(float az)
   //	{	0		0		1		0	}
   //	{	0		0		0		1	}
 
-  this->m0 = cos(az);
-  this->m1 = -sin(az);
+  this->m0 = (float)cos(az);
+  this->m1 = (float)-sin(az);
   this->m2 = 0;
   this->m3 = 0;
 
-  this->m4 = sin(az);
-  this->m5 = cos(az);
+  this->m4 = (float)sin(az);
+  this->m5 = (float)cos(az);
   this->m6 = 0;
   this->m7 = 0;
 

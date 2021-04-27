@@ -6,7 +6,7 @@
 
 #include "ParticleEmitter.h"
 
-static const unsigned char squareColors[] =
+static constexpr unsigned char squareColors[] =
 {
   255,  255,  000,  255,
   000,  255,  255,  255,
@@ -14,7 +14,7 @@ static const unsigned char squareColors[] =
   255,  000,  255,  255,
 };
 
-static const double squareVertices[] =
+static constexpr double squareVertices[] =
 {
   -0.015,  -0.015, 0.0,
    0.015,  -0.015, 0.0,
@@ -297,7 +297,7 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
 
     if (sign == 0)
     {
-      var *= -1.0;
+      var *= -1.0f;
     }
 
     if (i == 6)

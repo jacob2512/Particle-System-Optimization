@@ -39,5 +39,5 @@ private:
 
   Vect4D z_axis = Vect4D(0.0f, -0.25f, 1.0f);
   Vect4D v = Vect4D(3, 4, 0);
-  const float v_offset = 0.05f;
+  static constexpr float v_offset = 0.05f;
 };

@@ -24,14 +24,14 @@ public:
 
 private:
 
-  const float life = 0.0f;
+  static constexpr float life = 0.0f;
   const Vect4D	start_position = Vect4D(0.0f, 0.0f, 0.0f);
   const Vect4D	start_velocity = Vect4D(0.0f, 1.0f, 0.0f);
   const Vect4D  scale = Vect4D(1.0f, 1.0f, 1.0f, 1.0f);
 
-  const float	max_life = MAX_LIFE;
-  const int		max_particles = NUM_PARTICLES;
-  const float	spawn_frequency = 0.0000001f;
+  static constexpr float	max_life = MAX_LIFE;
+  static constexpr int		max_particles = NUM_PARTICLES;
+  static constexpr float	spawn_frequency = 0.0000001f;
 
   float	last_spawn;
   float	last_loop;
@@ -41,7 +41,7 @@ private:
   int bufferCount;
   Vect4D	vel_variance;
   Vect4D	pos_variance;
-  const float	scale_variance = 2.5f;
+  static constexpr float	scale_variance = 2.5f;
   std::list<Particle> drawBuffer;
   Particle* headParticle;
 

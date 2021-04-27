@@ -6,7 +6,7 @@
 // includes
 #include "Enum.h"
 
-// Foward Declarations
+// Forward Declarations
 class Matrix;
 
 // class
