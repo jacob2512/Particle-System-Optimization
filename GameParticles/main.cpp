@@ -60,11 +60,9 @@ int main(int argc, char* const argv[])
   transMatrix.setTransMatrix(&trans);
 
   // multiply them together
-  Matrix offsetCameraMatrix;
-  offsetCameraMatrix = cameraMatrix * transMatrix;
-
-  Matrix inverse = offsetCameraMatrix.Inverse();
-  float* inverse_float = reinterpret_cast<float*>(&inverse);
+  Matrix offsetCameraMatrixInverse;
+  offsetCameraMatrixInverse = (cameraMatrix * transMatrix).Inverse();
+  float* inverseMatrixFloat = reinterpret_cast<float*>(&offsetCameraMatrixInverse);
 
   // counter for printing
   int i = 0;
@@ -83,7 +81,7 @@ int main(int argc, char* const argv[])
     // set matrix to Model View
     glMatrixMode(GL_MODELVIEW);
     // push the inverseCameraMarix to stack
-    glLoadMatrixf(inverse_float);
+    glLoadMatrixf(inverseMatrixFloat);
     // push the camera matrix
     glPushMatrix();
 

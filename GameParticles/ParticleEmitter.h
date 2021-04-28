@@ -29,8 +29,8 @@ private:
   const Vect4D	start_velocity = Vect4D(0.0f, 1.0f, 0.0f);
   const Vect4D  scale = Vect4D(1.0f, 1.0f, 1.0f, 1.0f);
 
-  static constexpr float	max_life = MAX_LIFE;
-  static constexpr int		max_particles = NUM_PARTICLES;
+  static constexpr float	max_life = 10.0f;
+  static constexpr int		max_particles = 30 * 1000;
   static constexpr float	spawn_frequency = 0.0000001f;
 
   float	last_spawn;

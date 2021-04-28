@@ -19,14 +19,14 @@ public:
   Vect4D(float tx, float ty, float tz, float tw = 1.0f);
   ~Vect4D();
 
-  void norm(Vect4D& out);
+  Vect4D norm();
   void set(float tx, float ty, float tz, float tw = 1.0f);
 
   Vect4D operator + (Vect4D t);
   Vect4D operator - (Vect4D t);
   Vect4D operator * (float scale);
 
-  void Cross(Vect4D& vin, Vect4D& vout);
+  Vect4D Cross(Vect4D& v);
 
   float& operator[](VECT_ENUM e);
 

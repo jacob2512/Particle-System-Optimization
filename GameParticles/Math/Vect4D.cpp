@@ -25,8 +25,9 @@ Vect4D::~Vect4D()
   // nothing to delete
 }
 
-void Vect4D::norm(Vect4D& out)
+Vect4D Vect4D::norm()
 {
+  Vect4D out = Vect4D();
   float mag = (float)sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 
   if (0.0f < mag)
@@ -34,8 +35,9 @@ void Vect4D::norm(Vect4D& out)
     out.x = this->x / mag;
     out.y = this->y / mag;
     out.z = this->z / mag;
-    out.w = 1.0;
+    out.w = 1.0f;
   }
+  return out;
 }
 
 Vect4D Vect4D::operator + (Vect4D t)
@@ -93,12 +95,14 @@ float& Vect4D::operator[](VECT_ENUM e)
   }
 }
 
-void Vect4D::Cross(Vect4D& vin, Vect4D& vout)
+Vect4D Vect4D::Cross(Vect4D& v)
 {
-  vout.x = (y * vin.z - z * vin.y);
-  vout.y = (z * vin.x - x * vin.z);
-  vout.z = (x * vin.y - y * vin.x);
+  Vect4D vout;
+  vout.x = (y * v.z - z * v.y);
+  vout.y = (z * v.x - x * v.z);
+  vout.z = (x * v.y - y * v.x);
   vout.w = 1.0f;
+  return vout;
 }
 
 void Vect4D::set(float tx, float ty, float tz, float tw)
