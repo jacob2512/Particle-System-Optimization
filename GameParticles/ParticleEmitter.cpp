@@ -218,6 +218,8 @@ void ParticleEmitter::draw()
 
   // get the camera matrix from OpenGL
   glGetFloatv(GL_MODELVIEW_MATRIX, reinterpret_cast<float*>(&cameraMatrix));
+  // camera position
+  Vect4D camPos = cameraMatrix.get(Matrix::MATRIX_ROW_3);
 
   // iterate throughout the list of particles
   std::list<Particle>::iterator it;
@@ -229,8 +231,7 @@ void ParticleEmitter::draw()
     glColorPointer(4, GL_UNSIGNED_BYTE, 0, squareColors);
     glEnableClientState(GL_COLOR_ARRAY);
 
-    // camera position
-    transCamera.setTransMatrix(&cameraMatrix.get(Matrix::MATRIX_ROW_3));
+    transCamera.setTransMatrix(&camPos);
 
     // particle position
     transParticle.setTransMatrix(&it->position);
@@ -246,7 +247,7 @@ void ParticleEmitter::draw()
     tmp = scaleMatrix * transCamera * transParticle * rotParticle * scaleMatrix;
 
     // set the transformation matrix
-    glLoadMatrixf(reinterpret_cast<float*>(&(tmp)));
+    glLoadMatrixf(reinterpret_cast<float*>(&tmp));
 
     // draw the triangle strip
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
