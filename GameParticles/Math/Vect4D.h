@@ -3,8 +3,6 @@
 // This is a 4 dimensional Vect4D class
 #pragma once
 
-// includes
-#include "Enum.h"
 
 // Forward Declarations
 class Matrix;
@@ -19,6 +17,8 @@ public:
   Vect4D(float tx, float ty, float tz, float tw = 1.0f);
   ~Vect4D();
 
+  float& getxaddress() { return x; }
+
   Vect4D norm();
   void set(float tx, float ty, float tz, float tw = 1.0f);
 
@@ -27,9 +27,6 @@ public:
   Vect4D operator * (float scale);
 
   Vect4D Cross(Vect4D& v);
-
-  float& operator[](VECT_ENUM e);
-
 
 private:
   float x;

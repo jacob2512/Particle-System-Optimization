@@ -14,12 +14,12 @@ static constexpr unsigned char squareColors[] =
   255,  000,  255,  255,
 };
 
-static constexpr double squareVertices[] =
+static constexpr float squareVertices[] =
 {
-  -0.015,  -0.015, 0.0,
-   0.015,  -0.015, 0.0,
-  -0.015,   0.015, 0.0,
-   0.015,   0.015, 0.0,
+  -0.015f,  -0.015f, 0.0f,
+   0.015f,  -0.015f, 0.0f,
+  -0.015f,   0.015f, 0.0f,
+   0.015f,   0.015f, 0.0f,
 };
 
 
@@ -207,47 +207,48 @@ void ParticleEmitter::removeParticleFromList(Particle* p)
 
 void ParticleEmitter::draw()
 {
+  // OpenGL goo... don't worry about this
+  glVertexPointer(3, GL_FLOAT, 0, squareVertices);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glColorPointer(4, GL_UNSIGNED_BYTE, 0, squareColors);
+  glEnableClientState(GL_COLOR_ARRAY);
+
   // get the camera matrix from OpenGL
   // need to get the position
   Matrix cameraMatrix;
 
-  Matrix transCamera;
-  Matrix transParticle;
-  Matrix rotParticle;
-  Matrix scaleMatrix;
+  Matrix transCameraMatrix;
+
+  Matrix transParticleMatrix;
+  Matrix rotParticleMatrix;
+  Matrix scaleParticleMatrix;
+
+  float* cameraFloatArray = reinterpret_cast<float*>(&cameraMatrix);
 
   // get the camera matrix from OpenGL
-  glGetFloatv(GL_MODELVIEW_MATRIX, reinterpret_cast<float*>(&cameraMatrix));
-  // camera position
-  Vect4D camPos = cameraMatrix.get(Matrix::MATRIX_ROW_3);
+  glGetFloatv(GL_MODELVIEW_MATRIX, cameraFloatArray);
+  cameraMatrix.setFromFloatArray(cameraFloatArray);
+  transCameraMatrix.setTransMatrix(cameraMatrix.getTransRow());
 
   // iterate throughout the list of particles
   std::list<Particle>::iterator it;
   for (it = drawBuffer.begin(); it != drawBuffer.end(); ++it)
   {
-    // OpenGL goo... don't worry about this
-    glVertexPointer(3, GL_DOUBLE, 0, squareVertices);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glColorPointer(4, GL_UNSIGNED_BYTE, 0, squareColors);
-    glEnableClientState(GL_COLOR_ARRAY);
-
-    transCamera.setTransMatrix(&camPos);
-
     // particle position
-    transParticle.setTransMatrix(&it->position);
+    transParticleMatrix.setTransMatrix(it->position);
 
     // rotation matrix
-    rotParticle.setRotZMatrix(it->rotation);
+    rotParticleMatrix.setRotZMatrix(it->rotation);
 
     // scale Matrix
-    scaleMatrix.setScaleMatrix(&it->scale);
+    scaleParticleMatrix.setScaleMatrix(it->scale);
 
     // total transformation of particle
-    Matrix tmp;
-    tmp = scaleMatrix * transCamera * transParticle * rotParticle * scaleMatrix;
+    Matrix resultMatrix;
+    resultMatrix = scaleParticleMatrix * transCameraMatrix * transParticleMatrix * rotParticleMatrix * scaleParticleMatrix;
 
     // set the transformation matrix
-    glLoadMatrixf(reinterpret_cast<float*>(&tmp));
+    glLoadMatrixf(resultMatrix.asFloatArray());
 
     // draw the triangle strip
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -256,7 +257,6 @@ void ParticleEmitter::draw()
     // magic...  really it's magic.
     glGetError();
   }
-
 
   // done with buffer, clear it.
   drawBuffer.clear();
@@ -271,7 +271,8 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
   // Sometimes code like this is inside real commercial code ( so now you know how it feels )
 
   float* t_pos = reinterpret_cast<float*>(&pos);
-  float* t_var = &pos_variance[x];
+  float* t_var = &pos_variance.getxaddress();
+
   float var = static_cast<float>(rand() % 1000) * 0.001f;
   float sign = static_cast<float>(rand() % 2);
 
@@ -282,8 +283,8 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
 
     if (i == 3)
     {
-      t_pos = &vel[x];
-      t_var = &vel_variance[x];
+      t_pos = &vel.getxaddress();
+      t_var = &vel_variance.getxaddress();
     }
     else
     {

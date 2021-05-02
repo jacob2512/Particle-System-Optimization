@@ -2,71 +2,43 @@
 
 // includes
 #include "Enum.h"
-
-// forward declare
-class Vect4D;
+#include "Vect4D.h"
 
 // class
 class Matrix
 {
 public:
 
-  // local enumerations
-  const enum MatrixRowEnum
-  {
-    MATRIX_ROW_0,
-    MATRIX_ROW_1,
-    MATRIX_ROW_2,
-    MATRIX_ROW_3
-  };
-
   Matrix();
   Matrix(Matrix& t);
   ~Matrix();
+  
+  Vect4D getTransRow() { return r3; }
 
-  void set(MatrixRowEnum row, Vect4D* t);
-  Vect4D get(MatrixRowEnum row);
+  float* asFloatArray();
+  void setFromFloatArray(float* arr);
 
   void setIdentMatrix();
-  void setTransMatrix(Vect4D* t);
-  void setScaleMatrix(Vect4D* s);
+  void setTransMatrix(Vect4D t);
+  void setScaleMatrix(Vect4D s);
   void setRotZMatrix(float Z_Radians);
 
-  float& operator[](INDEX_ENUM e);
-
   Matrix operator*(Matrix& t);
-  Matrix operator*(float s);
-
-  float Determinant();
-
-  Matrix GetAdjugate();
-  Matrix& Matrix::operator/=(float t);
-
-  Matrix Inverse();
 
 private:
 
-  // ROW 0
-  float m0;
-  float m1;
-  float m2;
-  float m3;
+  //have to pre-allocate this array to resolve
+  //Warning C4172 returning address of local variable or temporary
+  float matrixFloatArray[16] = 
+  {
+    0.0f,0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f, 
+    0.0f, 0.0f, 0.0f, 0.0f
+  };
 
-  // ROW 1
-  float m4;
-  float m5;
-  float m6;
-  float m7;
-
-  // ROW 2
-  float m8;
-  float m9;
-  float m10;
-  float m11;
-
-  // ROW 3
-  float m12;
-  float m13;
-  float m14;
-  float m15;
+  Vect4D r0;
+  Vect4D r1;
+  Vect4D r2;
+  Vect4D r3;
 };

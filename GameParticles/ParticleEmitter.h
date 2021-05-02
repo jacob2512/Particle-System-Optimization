@@ -3,7 +3,6 @@
 #include "Math\Matrix.h"
 #include "Math\Vect4D.h"
 #include "Particle.h"
-#include "Settings.h"
 
 #include <list>
 

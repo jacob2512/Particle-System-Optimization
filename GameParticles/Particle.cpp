@@ -17,18 +17,6 @@ Particle::~Particle()
   // nothing to do
 }
 
-void Particle::CopyDataOnly(Particle* p)
-{
-  // copy the data only
-  // this way of copying data is more efficient that element by element
-  this->position = p->position;
-  this->velocity = p->velocity;
-  this->scale = p->scale;
-  this->rotation = p->rotation;
-  this->rotation_velocity = p->rotation_velocity;
-  this->life = p->life;
-}
-
 void Particle::Update(const float& time_elapsed)
 {
   // serious math below - magic secret sauce

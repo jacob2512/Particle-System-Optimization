@@ -48,21 +48,10 @@ int main(int argc, char* const argv[])
   // create an emitter:-------------------------------
   ParticleEmitter emitter;
 
-  // Get the inverse Camera Matrix:-------------------
-
-    // initialize the camera matrix
-  Matrix cameraMatrix;
-  cameraMatrix.setIdentMatrix();
-
   // setup the translation matrix
   Matrix transMatrix;
-  Vect4D trans(0.0f, 3.0f, 10.0f);
-  transMatrix.setTransMatrix(&trans);
-
-  // multiply them together
-  Matrix offsetCameraMatrixInverse;
-  offsetCameraMatrixInverse = (cameraMatrix * transMatrix).Inverse();
-  float* inverseMatrixFloat = reinterpret_cast<float*>(&offsetCameraMatrixInverse);
+  transMatrix.setTransMatrix(Vect4D(0.0f, 3.0f, 10.0f));
+  float* resultFloatArray = transMatrix.asFloatArray();
 
   // counter for printing
   int i = 0;
@@ -81,7 +70,7 @@ int main(int argc, char* const argv[])
     // set matrix to Model View
     glMatrixMode(GL_MODELVIEW);
     // push the inverseCameraMarix to stack
-    glLoadMatrixf(inverseMatrixFloat);
+    glLoadMatrixf(resultFloatArray);
     // push the camera matrix
     glPushMatrix();
 
