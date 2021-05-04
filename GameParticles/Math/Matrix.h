@@ -1,7 +1,6 @@
 #pragma once
 
 // includes
-#include "Enum.h"
 #include "Vect4D.h"
 
 //class size: 128 bytes (64 bytes, without matrixFloatArray)
