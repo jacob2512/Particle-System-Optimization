@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Math\Matrix.h"
-#include "Math\Vect4D.h"
 #include "Particle.h"
 
 #include <list>

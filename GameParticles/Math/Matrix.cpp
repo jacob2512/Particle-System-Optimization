@@ -1,6 +1,5 @@
 #include <Math.h>
 #include <assert.h>
-#include "Vect4d.h"
 #include "Matrix.h"
 
 

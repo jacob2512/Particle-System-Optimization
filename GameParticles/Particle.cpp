@@ -1,5 +1,4 @@
 #include "Particle.h"
-#include "Math/Matrix.h"
 
 Particle::Particle()
 {
