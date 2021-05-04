@@ -22,7 +22,7 @@ void Particle::Update(const float& time_elapsed)
   // serious math below - magic secret sauce
   life += time_elapsed;
   position = position + (velocity * time_elapsed);
-  v = position.Cross(z_axis);
+  Vect4D v = position.Cross(Vect4D(0.0f, -0.25f, 1.0f));
   position = position + v.norm() * v_offset * life;
 
   rotation = rotation + rotation_velocity * time_elapsed;

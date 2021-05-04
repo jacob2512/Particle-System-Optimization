@@ -4,7 +4,7 @@
 #include "Enum.h"
 #include "Vect4D.h"
 
-// class
+//class size: 128 bytes (64 bytes, without matrixFloatArray)
 class Matrix
 {
 public:
@@ -29,13 +29,13 @@ private:
 
   //have to pre-allocate this array to resolve
   //Warning C4172 returning address of local variable or temporary
-  float matrixFloatArray[16] = 
-  {
-    0.0f,0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 0.0f, 
-    0.0f, 0.0f, 0.0f, 0.0f
-  };
+  //float matrixFloatArray[16] = 
+  //{
+  //  0.0f,0.0f, 0.0f, 0.0f,
+  //  0.0f, 0.0f, 0.0f, 0.0f,
+  //  0.0f, 0.0f, 0.0f, 0.0f, 
+  //  0.0f, 0.0f, 0.0f, 0.0f
+  //};
 
   Vect4D r0;
   Vect4D r1;

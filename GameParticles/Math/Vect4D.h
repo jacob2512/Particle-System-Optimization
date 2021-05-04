@@ -7,7 +7,7 @@
 // Forward Declarations
 class Matrix;
 
-// class
+//class size: 16 bytes
 class Vect4D
 {
 public:

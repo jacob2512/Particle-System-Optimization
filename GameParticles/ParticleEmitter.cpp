@@ -223,7 +223,7 @@ void ParticleEmitter::draw()
   Matrix rotParticleMatrix;
   Matrix scaleParticleMatrix;
 
-  float* cameraFloatArray = reinterpret_cast<float*>(&cameraMatrix);
+  float* cameraFloatArray = cameraMatrix.asFloatArray();
 
   // get the camera matrix from OpenGL
   glGetFloatv(GL_MODELVIEW_MATRIX, cameraFloatArray);
