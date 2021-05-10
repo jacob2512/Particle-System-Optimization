@@ -5,7 +5,7 @@
 
 #include <list>
 
-//class size: 108 bytes
+//class size: 72 bytes
 class ParticleEmitter
 {
 public:
@@ -22,9 +22,9 @@ public:
   void Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc);
 
 private:
-  const Vect4D	start_position = Vect4D(0.0f, 0.0f, 0.0f);
-  const Vect4D	start_velocity = Vect4D(0.0f, 1.0f, 0.0f);
-  const Vect4D  scale = Vect4D(1.0f, 1.0f, 1.0f);
+  const Vect4D&	start_position { 0.0f, 0.0f, 0.0f, 1.0f };
+  const Vect4D&	start_velocity{ 0.0f, 1.0f, 0.0f, 1.0f };
+  const Vect4D&  scale{ 1.0f, 1.0f, 1.0f, 1.0f };
 
   static constexpr float life = 0.0f;
   static constexpr float	max_life = 10.0f;
@@ -32,13 +32,13 @@ private:
 
   float	last_spawn;
   float	last_loop;
-  int		last_active_particle;
+  int		last_active_particle = -1;
   static constexpr int		max_particles = 30 * 1000;
 
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;
-  Vect4D	vel_variance;
-  Vect4D	pos_variance;
+  Vect4D	vel_variance{ 1.0f, 4.0f, 0.4f, 1.0f };
+  Vect4D	pos_variance{ 1.0f, 1.0f, 1.0f, 1.0f };
   int bufferCount;
   std::list<Particle> drawBuffer;
   Particle* headParticle;

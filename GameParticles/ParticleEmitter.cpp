@@ -26,9 +26,6 @@ static constexpr float squareVertices[] =
 ParticleEmitter::ParticleEmitter()
   : last_spawn(globalTimer::getTimerInSec()),
   last_loop(globalTimer::getTimerInSec()),
-  last_active_particle(-1),
-  vel_variance(1.0f, 4.0f, 0.4f),
-  pos_variance(1.0f, 1.0f, 1.0f),
   headParticle(0)
 {
   // nothing to do
@@ -270,7 +267,7 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
   // Yes it's ugly - I didn't write this so don't bitch at me
   // Sometimes code like this is inside real commercial code ( so now you know how it feels )
 
-  float* t_pos = reinterpret_cast<float*>(&pos);
+  float* t_pos = pos.asFloatArray();
   float* t_var = &pos_variance.getxaddress();
 
   float var = static_cast<float>(rand() % 1000) * 0.001f;

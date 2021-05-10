@@ -15,8 +15,10 @@ public:
 
   Vect4D();
   Vect4D(float tx, float ty, float tz, float tw = 1.0f);
+  Vect4D::Vect4D(const float* farray);
   ~Vect4D();
 
+  float* asFloatArray();
   float& getxaddress() { return x; }
 
   Vect4D norm();

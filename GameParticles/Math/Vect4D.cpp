@@ -20,9 +20,26 @@ Vect4D::Vect4D(float tx, float ty, float tz, float tw)
   this->w = tw;
 }
 
+Vect4D::Vect4D(const float* farray)
+{
+  this->x = farray[0];
+  this->y = farray[1];
+  this->z = farray[2];
+  this->w = farray[3];
+}
+
 Vect4D::~Vect4D()
 {
   // nothing to delete
+}
+
+float* Vect4D::asFloatArray()
+{
+  float out[] = {
+    this->x, this->y, this->z, this->w
+  };
+
+  return out;
 }
 
 Vect4D Vect4D::norm()
