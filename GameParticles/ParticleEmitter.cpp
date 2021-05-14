@@ -22,6 +22,9 @@ static constexpr float squareVertices[] =
    0.015f,   0.015f, 0.0f,
 };
 
+constexpr Vect4D	start_position(0.0f, 0.0f, 0.0f, 1.0f);
+constexpr Vect4D  start_velocity( 0.0f, 1.0f, 0.0f, 1.0f );
+constexpr Vect4D  scale( 1.0f, 1.0f, 1.0f, 1.0f );
 
 ParticleEmitter::ParticleEmitter()
   : last_spawn(globalTimer::getTimerInSec()),

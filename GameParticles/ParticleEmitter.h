@@ -5,7 +5,7 @@
 
 #include <list>
 
-//class size: 72 bytes
+//class size: 60 bytes
 class ParticleEmitter
 {
 public:
@@ -22,9 +22,6 @@ public:
   void Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc);
 
 private:
-  const Vect4D&	start_position { 0.0f, 0.0f, 0.0f, 1.0f };
-  const Vect4D&	start_velocity{ 0.0f, 1.0f, 0.0f, 1.0f };
-  const Vect4D&  scale{ 1.0f, 1.0f, 1.0f, 1.0f };
 
   static constexpr float life = 0.0f;
   static constexpr float	max_life = 10.0f;

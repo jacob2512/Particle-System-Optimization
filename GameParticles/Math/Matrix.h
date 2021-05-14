@@ -3,7 +3,7 @@
 // includes
 #include "Vect4D.h"
 
-//class size: 128 bytes (64 bytes, without matrixFloatArray)
+//class size: 64 bytes
 class Matrix
 {
 public:
@@ -18,23 +18,13 @@ public:
   void setFromFloatArray(float* arr);
 
   void setIdentMatrix();
-  void setTransMatrix(Vect4D t);
-  void setScaleMatrix(Vect4D s);
+  void setTransMatrix(const Vect4D& t);
+  void setScaleMatrix(const Vect4D& s);
   void setRotZMatrix(float Z_Radians);
 
-  Matrix operator*(Matrix& t);
+  Matrix operator*(const Matrix& t) const;
 
 private:
-
-  //have to pre-allocate this array to resolve
-  //Warning C4172 returning address of local variable or temporary
-  //float matrixFloatArray[16] = 
-  //{
-  //  0.0f,0.0f, 0.0f, 0.0f,
-  //  0.0f, 0.0f, 0.0f, 0.0f,
-  //  0.0f, 0.0f, 0.0f, 0.0f, 
-  //  0.0f, 0.0f, 0.0f, 0.0f
-  //};
 
   Vect4D r0;
   Vect4D r1;

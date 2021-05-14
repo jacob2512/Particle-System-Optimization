@@ -3,7 +3,7 @@
 // include
 #include "Math/Vect4D.h"
 
-//class size: 84 bytes (68 bytes, without Vect4D z_axis)
+//class size: 68 bytes
 class Particle
 {
 public:
@@ -19,7 +19,6 @@ private:
   float	rotation;
   float	rotation_velocity;
   static constexpr float v_offset = 0.05f;
-  //Vect4D z_axis = Vect4D(0.0f, -0.25f, 1.0f);
 
   Vect4D	position;
   Vect4D	velocity;

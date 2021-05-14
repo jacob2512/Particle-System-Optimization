@@ -27,33 +27,7 @@ Matrix::~Matrix()
 
 float* Matrix::asFloatArray()
 {
-  //matrixFloatArray[0]   = this->r0.x;
-  //matrixFloatArray[1]   = this->r0.y;
-  //matrixFloatArray[2]   = this->r0.z;
-  //matrixFloatArray[3]   = this->r0.w;
-  //matrixFloatArray[4]   = this->r1.x;
-  //matrixFloatArray[5]   = this->r1.y;
-  //matrixFloatArray[6]   = this->r1.z;
-  //matrixFloatArray[7]   = this->r1.w;
-  //matrixFloatArray[8]   = this->r2.x;
-  //matrixFloatArray[9]   = this->r2.y;
-  //matrixFloatArray[10]  = this->r2.z;
-  //matrixFloatArray[11]  = this->r2.w;
-  //matrixFloatArray[12]  = this->r3.x;
-  //matrixFloatArray[13]  = this->r3.y;
-  //matrixFloatArray[14]  = this->r3.z;
-  //matrixFloatArray[15]  = this->r3.w;
-
-  //return matrixFloatArray;
-
-  float out[] = {
-    this->r0.x, this->r0.y, this->r0.z, this->r0.w,
-    this->r1.x, this->r1.y, this->r1.z, this->r1.w,
-    this->r2.x, this->r2.y, this->r2.z, this->r2.w,
-    this->r3.x, this->r3.y, this->r3.z, this->r3.w
-  };
-
-  return out;
+  return &r0.x;
 }
 
 void Matrix::setFromFloatArray(float* arr)
@@ -99,7 +73,7 @@ void Matrix::setIdentMatrix()
   this->r3.w = 1.0f;
 }
 
-void Matrix::setTransMatrix(Vect4D t)
+void Matrix::setTransMatrix(const Vect4D& t)
 { // set the translation matrix (note: we are row major)
   this->r0.x = 1.0f;
   this->r0.y = 0.0f;
@@ -122,7 +96,7 @@ void Matrix::setTransMatrix(Vect4D t)
   this->r3.w = 1.0f;
 }
 
-void Matrix::setScaleMatrix(Vect4D scale)
+void Matrix::setScaleMatrix(const Vect4D& scale)
 {
   //	{	sx		0		0		0	}
   //	{	0		sy		0		0	}
@@ -178,7 +152,7 @@ void Matrix::setRotZMatrix(float az)
   this->r3.w = 1;
 }
 
-Matrix Matrix::operator*(Matrix& rhs)
+Matrix Matrix::operator*(const Matrix& rhs) const
 { // matrix multiplications
   Matrix mult;
 

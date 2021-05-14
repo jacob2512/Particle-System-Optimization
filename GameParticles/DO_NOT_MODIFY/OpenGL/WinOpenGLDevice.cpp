@@ -1,3 +1,5 @@
+#pragma warning(push)
+#pragma warning(disable:4458)
 
 #ifdef WIN32
 
@@ -298,3 +300,4 @@ void OpenGLDevice::setHInstance(HINSTANCE hInst)
 //}
 
 #endif
+#pragma warning(pop)

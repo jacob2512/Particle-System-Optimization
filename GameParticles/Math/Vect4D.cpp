@@ -4,22 +4,6 @@
 #include "Vect4D.h"
 
 
-Vect4D::Vect4D()
-{
-  this->x = 0.0f;
-  this->y = 0.0f;
-  this->z = 0.0f;
-  this->w = 1.0f;
-}
-
-Vect4D::Vect4D(float tx, float ty, float tz, float tw)
-{
-  this->x = tx;
-  this->y = ty;
-  this->z = tz;
-  this->w = tw;
-}
-
 Vect4D::Vect4D(const float* farray)
 {
   this->x = farray[0];
@@ -28,18 +12,19 @@ Vect4D::Vect4D(const float* farray)
   this->w = farray[3];
 }
 
-Vect4D::~Vect4D()
+Vect4D& Vect4D::operator=(const Vect4D& rhs)
 {
-  // nothing to delete
+  this->x = rhs.x;
+  this->y = rhs.y;
+  this->z = rhs.z;
+  this->w = rhs.w;
+
+  return *this;
 }
 
 float* Vect4D::asFloatArray()
 {
-  float out[] = {
-    this->x, this->y, this->z, this->w
-  };
-
-  return out;
+  return &x;
 }
 
 Vect4D Vect4D::norm()
@@ -66,48 +51,25 @@ void Vect4D::set(float tx, float ty, float tz, float tw)
   this->w = tw;
 }
 
-Vect4D Vect4D::operator + (Vect4D t)
+Vect4D Vect4D::operator + (const Vect4D& t) const
 {
-  Vect4D out;
-
-  out.x = this->x + t.x;
-  out.y = this->y + t.y;
-  out.z = this->z + t.z;
-
-  return out;
+  return Vect4D(this->x + t.x, this->y + t.y, this->z + t.z);
 }
 
-Vect4D Vect4D::operator - (Vect4D t)
+Vect4D Vect4D::operator - (const Vect4D& t) const
 {
-  Vect4D out;
-
-  out.x = this->x - t.x;
-  out.y = this->y - t.y;
-  out.z = this->z - t.z;
-
-  return out;
+  return Vect4D(this->x - t.x, this->y - t.y, this->z - t.z);
 }
 
-Vect4D Vect4D::operator *(float scale)
+Vect4D Vect4D::operator *(float scale) const
 {
-  Vect4D tmp;
-
-  tmp.x = this->x * scale;
-  tmp.y = this->y * scale;
-  tmp.z = this->z * scale;
-
-  return tmp;
+  return Vect4D(this->x * scale, this->y * scale, this->z * scale);
 }
 
 
-Vect4D Vect4D::Cross(Vect4D& v)
+Vect4D Vect4D::Cross(const Vect4D& v) const
 {
-  Vect4D out;
-  out.x = (y * v.z - z * v.y);
-  out.y = (z * v.x - x * v.z);
-  out.z = (x * v.y - y * v.x);
-  out.w = 1.0f;
-  return out;
+  return Vect4D((y * v.z - z * v.y), (z * v.x - x * v.z), (x * v.y - y * v.x));
 }
 
 // End of file
