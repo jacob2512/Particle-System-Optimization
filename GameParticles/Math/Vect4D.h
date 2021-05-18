@@ -18,9 +18,6 @@ public:
   constexpr Vect4D(const Vect4D& rhs);
   ~Vect4D() = default;
 
-  //Vect4D::Vect4D(const float* farray);
-  float* asFloatArray();
-
   Vect4D norm();
   void set(float tx, float ty, float tz, float tw = 1.0f);
 

@@ -4,12 +4,6 @@
 #include "Vect4D.h"
 
 
-
-float* Vect4D::asFloatArray()
-{
-  return &x;
-}
-
 Vect4D Vect4D::norm()
 {
   Vect4D out;
