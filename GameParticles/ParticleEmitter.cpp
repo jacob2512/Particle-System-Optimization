@@ -270,22 +270,22 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
 {
   // Add some randomness...
 
-  float var = 0.0f;
+  float random_variance = 0.0f;
 
   for (int i = 0; i < 3; i++)
   {
-    var = (static_cast<float>(rand() % 2) == 0) ?
+    random_variance = (static_cast<float>(rand() % 2) == 0) ?
       (static_cast<float>(rand() % 1000) * -0.001f) :
       (static_cast<float>(rand() % 1000) * 0.001f);
-    pos[i+1] += (pos_variance * var)[i+1];
+    pos[i+1] += (pos_variance * random_variance)[i+1];
 
-    var = (static_cast<float>(rand() % 2) == 0) ?
+    random_variance = (static_cast<float>(rand() % 2) == 0) ?
       (static_cast<float>(rand() % 1000) * -0.001f) :
       (static_cast<float>(rand() % 1000) * 0.001f);
-    vel[i] += (vel_variance * var)[i];
+    vel[i] += (vel_variance * random_variance)[i];
   }
 
-  sc = sc * var * 4.0f;
+  sc = sc * random_variance * 4.0f;
 }
 
 // End of file
