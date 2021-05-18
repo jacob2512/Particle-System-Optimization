@@ -4,23 +4,6 @@
 #include "Vect4D.h"
 
 
-Vect4D::Vect4D(const float* farray)
-{
-  this->x = farray[0];
-  this->y = farray[1];
-  this->z = farray[2];
-  this->w = farray[3];
-}
-
-Vect4D& Vect4D::operator=(const Vect4D& rhs)
-{
-  this->x = rhs.x;
-  this->y = rhs.y;
-  this->z = rhs.z;
-  this->w = rhs.w;
-
-  return *this;
-}
 
 float* Vect4D::asFloatArray()
 {
@@ -51,6 +34,16 @@ void Vect4D::set(float tx, float ty, float tz, float tw)
   this->w = tw;
 }
 
+Vect4D& Vect4D::operator = (const Vect4D& rhs)
+{
+  this->x = rhs.x;
+  this->y = rhs.y;
+  this->z = rhs.z;
+  this->w = rhs.w;
+
+  return *this;
+}
+
 Vect4D Vect4D::operator + (const Vect4D& t) const
 {
   return Vect4D(this->x + t.x, this->y + t.y, this->z + t.z);
@@ -61,11 +54,32 @@ Vect4D Vect4D::operator - (const Vect4D& t) const
   return Vect4D(this->x - t.x, this->y - t.y, this->z - t.z);
 }
 
-Vect4D Vect4D::operator *(float scale) const
+Vect4D Vect4D::operator * (const float scale) const
 {
   return Vect4D(this->x * scale, this->y * scale, this->z * scale);
 }
 
+float& Vect4D::operator[](const int& idx)
+{
+  switch (idx)
+  {
+  case 0:
+    return this->x;
+    break;
+  case 1:
+    return this->y;
+    break;
+  case 2:
+    return this->z;
+    break;
+  case 3:
+    return this->w;
+    break;
+  default:
+    assert(0);
+    return this->x;
+  }
+}
 
 Vect4D Vect4D::Cross(const Vect4D& v) const
 {

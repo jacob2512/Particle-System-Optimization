@@ -16,20 +16,19 @@ public:
   constexpr Vect4D();
   constexpr Vect4D(float tx, float ty, float tz, float tw = 1.0f);
   constexpr Vect4D(const Vect4D& rhs);
-  Vect4D& operator=(const Vect4D& rhs);
+  ~Vect4D() = default;
 
-  Vect4D::Vect4D(const float* farray);
-  ~Vect4D()=default;
-
+  //Vect4D::Vect4D(const float* farray);
   float* asFloatArray();
-  float& getxaddress() { return x; }
 
   Vect4D norm();
   void set(float tx, float ty, float tz, float tw = 1.0f);
 
+  Vect4D& operator = (const Vect4D& rhs);
   Vect4D operator + (const Vect4D& t) const;
   Vect4D operator - (const Vect4D& t) const;
-  Vect4D operator * (float scale) const;
+  Vect4D operator * (const float scale) const;
+  float& operator[](const int& idx);
 
   Vect4D Cross(const Vect4D& v) const;
 

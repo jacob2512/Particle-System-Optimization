@@ -26,6 +26,9 @@ constexpr Vect4D	start_position(0.0f, 0.0f, 0.0f, 1.0f);
 constexpr Vect4D  start_velocity( 0.0f, 1.0f, 0.0f, 1.0f );
 constexpr Vect4D  scale( 1.0f, 1.0f, 1.0f, 1.0f );
 
+constexpr Vect4D	vel_variance( 1.0f, 4.0f, 0.4f, 1.0f );
+constexpr Vect4D	pos_variance( 1.0f, 1.0f, 1.0f, 1.0f );
+
 ParticleEmitter::ParticleEmitter()
   : last_spawn(globalTimer::getTimerInSec()),
   last_loop(globalTimer::getTimerInSec()),
@@ -267,52 +270,22 @@ void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
 {
   // Add some randomness...
 
-  // Yes it's ugly - I didn't write this so don't bitch at me
-  // Sometimes code like this is inside real commercial code ( so now you know how it feels )
+  float var = 0.0f;
 
-  float* t_pos = pos.asFloatArray();
-  float* t_var = &pos_variance.getxaddress();
-
-  float var = static_cast<float>(rand() % 1000) * 0.001f;
-  float sign = static_cast<float>(rand() % 2);
-
-  for (int i = 0; i < 7; i++)
+  for (int i = 0; i < 3; i++)
   {
-    var = static_cast<float>(rand() % 1000) * 0.001f;
-    sign = static_cast<float>(rand() % 2);
+    var = (static_cast<float>(rand() % 2) == 0) ?
+      (static_cast<float>(rand() % 1000) * -0.001f) :
+      (static_cast<float>(rand() % 1000) * 0.001f);
+    pos[i+1] += (pos_variance * var)[i+1];
 
-    if (i == 3)
-    {
-      t_pos = &vel.getxaddress();
-      t_var = &vel_variance.getxaddress();
-    }
-    else
-    {
-      t_pos++;
-      t_var++;
-    }
-
-    if (i == 6)
-    {
-      var *= 2.0f;
-    }
-
-    if (sign == 0)
-    {
-      var *= -1.0f;
-    }
-
-    if (i == 6)
-    {
-      var *= 2.0f;
-      sc = sc * var;
-    }
-    else
-    {
-      *t_pos += *t_var * var;
-    }
+    var = (static_cast<float>(rand() % 2) == 0) ?
+      (static_cast<float>(rand() % 1000) * -0.001f) :
+      (static_cast<float>(rand() % 1000) * 0.001f);
+    vel[i] += (vel_variance * var)[i];
   }
-}
 
+  sc = sc * var * 4.0f;
+}
 
 // End of file

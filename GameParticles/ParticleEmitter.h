@@ -34,9 +34,7 @@ private:
 
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;
-  Vect4D	vel_variance{ 1.0f, 4.0f, 0.4f, 1.0f };
-  Vect4D	pos_variance{ 1.0f, 1.0f, 1.0f, 1.0f };
-  int bufferCount;
+  int bufferCount = 0;
   std::list<Particle> drawBuffer;
   Particle* headParticle;
 
