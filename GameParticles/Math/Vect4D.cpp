@@ -53,26 +53,33 @@ Vect4D Vect4D::operator * (const float scale) const
   return Vect4D(this->x * scale, this->y * scale, this->z * scale);
 }
 
-float& Vect4D::operator[](const int& idx)
+Vect4D Vect4D::operator * (const Vect4D& v) const
 {
-  switch (idx)
-  {
-  case 0:
-    return this->x;
-    break;
-  case 1:
-    return this->y;
-    break;
-  case 2:
-    return this->z;
-    break;
-  case 3:
-    return this->w;
-    break;
-  default:
-    assert(0);
-    return this->x;
-  }
+  return Vect4D(this->x * v.x, this->y * v.y, this->z * v.z);
+}
+
+Vect4D& Vect4D::operator += (const Vect4D& v)
+{
+  this->x += v.x;
+  this->y += v.y;
+  this->z += v.z;
+  return *this;
+}
+
+Vect4D& Vect4D::operator *= (const Vect4D& v)
+{
+  this->x *= v.x;
+  this->y *= v.y;
+  this->z *= v.z;
+  return *this;
+}
+
+Vect4D& Vect4D::operator *= (const float sc)
+{
+  this->x *= sc;
+  this->y *= sc;
+  this->z *= sc;
+  return *this;
 }
 
 Vect4D Vect4D::Cross(const Vect4D& v) const

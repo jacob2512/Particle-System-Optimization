@@ -24,7 +24,7 @@ static constexpr float squareVertices[] =
 
 constexpr Vect4D	start_position(0.0f, 0.0f, 0.0f, 1.0f);
 constexpr Vect4D  start_velocity( 0.0f, 1.0f, 0.0f, 1.0f );
-constexpr Vect4D  scale( 1.0f, 1.0f, 1.0f, 1.0f );
+constexpr Vect4D  start_scale( 2.0f, 2.0f, 2.0f, 1.0f );
 
 constexpr Vect4D	vel_variance( 1.0f, 4.0f, 0.4f, 1.0f );
 constexpr Vect4D	pos_variance( 1.0f, 1.0f, 1.0f, 1.0f );
@@ -58,7 +58,7 @@ void ParticleEmitter::SpawnParticle()
     newParticle->life = life;
     newParticle->position = start_position;
     newParticle->velocity = start_velocity;
-    newParticle->scale = scale;
+    newParticle->scale = start_scale;
 
     // apply the variance
     this->Execute(newParticle->position, newParticle->velocity, newParticle->scale);
@@ -265,27 +265,24 @@ void ParticleEmitter::draw()
   drawBuffer.clear();
 }
 
+inline static float GenerateRandom()
+{
+  return 2.0f * rand() / (float)RAND_MAX - 1;
+}
 
 void ParticleEmitter::Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc)
 {
   // Add some randomness...
 
-  float random_variance = 0.0f;
+  Vect4D pos_rand_var(GenerateRandom(), GenerateRandom(), GenerateRandom());
+  pos_rand_var *= pos_variance;
+  Vect4D vel_rand_var(GenerateRandom(), GenerateRandom(), GenerateRandom());
+  vel_rand_var *= vel_variance;
 
-  for (int i = 0; i < 3; i++)
-  {
-    random_variance = (static_cast<float>(rand() % 2) == 0) ?
-      (static_cast<float>(rand() % 1000) * -0.001f) :
-      (static_cast<float>(rand() % 1000) * 0.001f);
-    pos[i+1] += (pos_variance * random_variance)[i+1];
+  pos += pos_rand_var;
+  vel += vel_rand_var;
 
-    random_variance = (static_cast<float>(rand() % 2) == 0) ?
-      (static_cast<float>(rand() % 1000) * -0.001f) :
-      (static_cast<float>(rand() % 1000) * 0.001f);
-    vel[i] += (vel_variance * random_variance)[i];
-  }
-
-  sc = sc * random_variance * 4.0f;
+  sc *= GenerateRandom() * 2;
 }
 
 // End of file

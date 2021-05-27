@@ -25,7 +25,10 @@ public:
   Vect4D operator + (const Vect4D& t) const;
   Vect4D operator - (const Vect4D& t) const;
   Vect4D operator * (const float scale) const;
-  float& operator[](const int& idx);
+  Vect4D operator * (const Vect4D& v) const;
+  Vect4D& operator += (const Vect4D& v);
+  Vect4D& operator *= (const Vect4D& v);
+  Vect4D& operator *= (const float sc);
 
   Vect4D Cross(const Vect4D& v) const;
 
