@@ -48,6 +48,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="ParticleHeap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DO_NOT_MODIFY\Event\WinEventHandler.cpp">
@@ -68,5 +69,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
+    <ClCompile Include="ParticleHeap.cpp" />
   </ItemGroup>
 </Project>
