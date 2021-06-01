@@ -14,12 +14,12 @@ ParticleHeap::~ParticleHeap()
   HeapDestroy(heap_ptr);
 }
 
-Particle* ParticleHeap::ParticleAlloc()
+Particle* ParticleHeap::ParticleAlloc() const
 {
   return (Particle*)HeapAlloc(heap_ptr, HEAP_NO_SERIALIZE, particle_size);
 }
 
-void ParticleHeap::ParticleFree(Particle* ptr)
+void ParticleHeap::ParticleFree(Particle* ptr) const
 {
   HeapFree(heap_ptr,HEAP_NO_SERIALIZE,ptr);
 }

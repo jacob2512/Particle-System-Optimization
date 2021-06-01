@@ -11,9 +11,9 @@ public:
 
   ParticleHeap();
   ~ParticleHeap();
-  Particle* ParticleAlloc();
-  void ParticleFree(Particle* ptr);
-  int GetMaxPatricles() { return max_particles - 1; };
+  Particle* ParticleAlloc() const;
+  void ParticleFree(Particle* ptr) const;
+  constexpr int GetMaxPatricles() { return max_particles - 1; };
 
 private:
   static constexpr int particle_size = sizeof(Particle);
