@@ -31,7 +31,6 @@ private:
   float	last_spawn;
   float	last_loop;
   int		last_active_particle = -1;
-  static constexpr int		max_particles = 30 * 1000;
 
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;

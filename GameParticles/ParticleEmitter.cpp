@@ -48,7 +48,7 @@ ParticleEmitter::~ParticleEmitter()
 void ParticleEmitter::SpawnParticle()
 {
   // create another particle if there are ones free
-  if (last_active_particle < max_particles - 1)
+  if (last_active_particle < particle_heap.GetMaxPatricles())
   {
     // create new particle
     Particle* newParticle = particle_heap.ParticleAlloc();

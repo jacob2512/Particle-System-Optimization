@@ -1,7 +1,6 @@
 #include "ParticleHeap.h"
 
 #include <assert.h>
-#include <stdio.h>
 
 
 ParticleHeap::ParticleHeap()
