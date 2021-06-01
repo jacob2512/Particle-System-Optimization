@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math\Matrix.h"
+#include "ParticleHeap.h"
 #include "Particle.h"
 
 #include <list>
@@ -34,8 +35,8 @@ private:
 
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;
-  int bufferCount = 0;
   std::list<Particle> drawBuffer;
   Particle* headParticle;
+  ParticleHeap particle_heap;
 
 };

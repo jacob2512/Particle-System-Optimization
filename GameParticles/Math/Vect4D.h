@@ -21,11 +21,11 @@ public:
   Vect4D norm();
   void set(float tx, float ty, float tz, float tw = 1.0f);
 
-  Vect4D& operator = (const Vect4D& rhs);
   Vect4D operator + (const Vect4D& t) const;
   Vect4D operator - (const Vect4D& t) const;
   Vect4D operator * (const float scale) const;
   Vect4D operator * (const Vect4D& v) const;
+  Vect4D& operator = (const Vect4D& rhs);
   Vect4D& operator += (const Vect4D& v);
   Vect4D& operator *= (const Vect4D& v);
   Vect4D& operator *= (const float sc);

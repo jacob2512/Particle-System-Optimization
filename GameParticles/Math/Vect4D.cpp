@@ -28,16 +28,6 @@ void Vect4D::set(float tx, float ty, float tz, float tw)
   this->w = tw;
 }
 
-Vect4D& Vect4D::operator = (const Vect4D& rhs)
-{
-  this->x = rhs.x;
-  this->y = rhs.y;
-  this->z = rhs.z;
-  this->w = rhs.w;
-
-  return *this;
-}
-
 Vect4D Vect4D::operator + (const Vect4D& t) const
 {
   return Vect4D(this->x + t.x, this->y + t.y, this->z + t.z);
@@ -56,6 +46,16 @@ Vect4D Vect4D::operator * (const float scale) const
 Vect4D Vect4D::operator * (const Vect4D& v) const
 {
   return Vect4D(this->x * v.x, this->y * v.y, this->z * v.z);
+}
+
+Vect4D& Vect4D::operator = (const Vect4D& rhs)
+{
+  this->x = rhs.x;
+  this->y = rhs.y;
+  this->z = rhs.z;
+  this->w = rhs.w;
+
+  return *this;
 }
 
 Vect4D& Vect4D::operator += (const Vect4D& v)

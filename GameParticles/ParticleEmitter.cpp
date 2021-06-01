@@ -50,9 +50,8 @@ void ParticleEmitter::SpawnParticle()
   // create another particle if there are ones free
   if (last_active_particle < max_particles - 1)
   {
-
     // create new particle
-    Particle* newParticle = new Particle();
+    Particle* newParticle = particle_heap.ParticleAlloc();
 
     // initialize the particle
     newParticle->life = life;
@@ -95,8 +94,11 @@ void ParticleEmitter::update()
   time_elapsed = current_time - last_loop;
 
   Particle* p = this->headParticle;
-  // walk the particles
 
+  // clear the buffer
+  drawBuffer.clear();
+
+  // walk the particles
   while (p != 0)
   {
     // call every particle and update its position 
@@ -115,39 +117,19 @@ void ParticleEmitter::update()
 
       // remove last node
       this->removeParticleFromList(s);
-
-      // update the number of particles
-      last_active_particle--;
     }
     else
     {
-      // increment to next point
+      // add to buffer
+      drawBuffer.push_back(*p);
+
+      // advance to next pointer
       p = p->next;
     }
   }
 
-  //move a copy to vector for faster iterations in draw
-  p = this->headParticle;
-  bufferCount = 0;
-
-  // clear the buffer
-  drawBuffer.clear();
-
-  // walk the pointers, add to list
-  while (p != 0)
-  {
-    // add to buffer
-    drawBuffer.push_back(*p);
-
-    // advance ptr
-    p = p->next;
-
-    // track the current count
-    bufferCount++;
-  }
-
   // make sure the counts track (asserts go away in release - relax Christos)
-  assert(bufferCount == (last_active_particle + 1));
+  assert(drawBuffer.size() == (last_active_particle + 1));
   last_loop = current_time;
 }
 
@@ -205,7 +187,10 @@ void ParticleEmitter::removeParticleFromList(Particle* p)
   }
 
   // bye bye
-  delete p;
+  particle_heap.ParticleFree(p);
+
+  // update the number of particles
+  last_active_particle--;
 }
 
 void ParticleEmitter::draw()
