@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CustomAssert.h" />
     <ClInclude Include="DO_NOT_MODIFY\Event\EventHandler.h" />
     <ClInclude Include="DO_NOT_MODIFY\Event\WinEventHandler.h" />
     <ClInclude Include="DO_NOT_MODIFY\OpenGL\OpenGLInterface.h" />
@@ -95,6 +96,7 @@
     <ClInclude Include="Settings.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CustomAssert.cpp" />
     <ClCompile Include="DO_NOT_MODIFY\Event\WinEventHandler.cpp" />
     <ClCompile Include="DO_NOT_MODIFY\OpenGL\WinOpenGLDevice.cpp" />
     <ClCompile Include="DO_NOT_MODIFY\Timer\Timer.cpp" />
