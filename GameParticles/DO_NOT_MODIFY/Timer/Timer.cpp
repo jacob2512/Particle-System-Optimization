@@ -3,7 +3,7 @@
 */
 
 #include <windows.h>
-#include <assert.h>
+#include "..\..\CustomAssert.h"
 
 #include "Timer.h"
 
@@ -31,7 +31,7 @@ void timer::tic()
 void timer::toc()
 {
 	tocTime = this->getTimer();
-	assert( tocTime.QuadPart > ticTime.QuadPart );
+	ASSERT( tocTime.QuadPart > ticTime.QuadPart );
 	deltaTime.QuadPart = tocTime.QuadPart - ticTime.QuadPart;
 }
 

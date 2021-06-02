@@ -2,7 +2,7 @@
 #include "DO_NOT_MODIFY\Timer\GlobalTimer.h"
 #include "DO_NOT_MODIFY\OpenGL\OpenGLInterface.h"
 
-#include <assert.h>
+#include "CustomAssert.h"
 
 #include "ParticleEmitter.h"
 
@@ -129,13 +129,13 @@ void ParticleEmitter::update()
   }
 
   // make sure the counts track (asserts go away in release - relax Christos)
-  assert(drawBuffer.size() == (last_active_particle + 1));
+  ASSERT(drawBuffer.size() == (size_t)(last_active_particle + 1));
   last_loop = current_time;
 }
 
 void ParticleEmitter::addParticleToList(Particle* p)
 {
-  assert(p);
+  ASSERT(p);
   if (this->headParticle == 0)
   { // first on list
     this->headParticle = p;
@@ -155,7 +155,7 @@ void ParticleEmitter::addParticleToList(Particle* p)
 void ParticleEmitter::removeParticleFromList(Particle* p)
 {
   // make sure we are not screwed with a null pointer
-  assert(p);
+  ASSERT(p);
 
   if (p->prev == 0)
   {

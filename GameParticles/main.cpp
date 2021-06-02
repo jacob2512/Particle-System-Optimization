@@ -1,4 +1,4 @@
-#include <assert.h>
+#include "CustomAssert.h"
 
 // Offset to local directory
 // REALLY useful trick to insure that you link to your code not some other library
@@ -43,7 +43,7 @@ int main(int argc, char* const argv[])
 
   // create a window:---------------------------------
   const bool success = OpenGLDevice::InitWindow();
-  assert(success);
+  ASSERT(success);
 
   // create an emitter:-------------------------------
   ParticleEmitter emitter;

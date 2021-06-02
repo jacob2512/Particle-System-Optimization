@@ -1,5 +1,4 @@
 #include <math.h>
-#include <assert.h>
 
 #include "Vect4D.h"
 
