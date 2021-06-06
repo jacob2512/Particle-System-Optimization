@@ -1,12 +1,15 @@
 #include "ParticleHeap.h"
 
-#include <assert.h>
+#include "CustomAssert.h"
+#include <new.h>
 
+// Marks a variable as unused (to avoid a compile warning)
+#define UNREFERENCED_VARIABLE(P) (void)(P)
 
 ParticleHeap::ParticleHeap()
 {
-  heap_ptr = HeapCreate(HEAP_NO_SERIALIZE, particle_size, 0);
-  assert(heap_ptr != nullptr);
+  heap_ptr = HeapCreate(HEAP_NO_SERIALIZE, particle_size, max_heap_size);
+  ASSERT(heap_ptr != nullptr);
 }
 
 ParticleHeap::~ParticleHeap()
@@ -16,10 +19,16 @@ ParticleHeap::~ParticleHeap()
 
 Particle* ParticleHeap::ParticleAlloc() const
 {
-  return (Particle*)HeapAlloc(heap_ptr, HEAP_NO_SERIALIZE, particle_size);
+  void* pp = HeapAlloc(heap_ptr, HEAP_NO_SERIALIZE, particle_size);
+  ASSERT(pp != nullptr);
+  Particle* ppr = new(pp) Particle;
+  return ppr;
 }
 
 void ParticleHeap::ParticleFree(Particle* ptr) const
 {
-  HeapFree(heap_ptr,HEAP_NO_SERIALIZE,ptr);
+  ptr->~Particle();
+  bool ret = HeapFree(heap_ptr, HEAP_NO_SERIALIZE, ptr);
+  UNREFERENCED_VARIABLE(ret);
+  ASSERT(ret != 0);
 }

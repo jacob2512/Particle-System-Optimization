@@ -2,8 +2,9 @@
 
 #include "Particle.h"
 
+#define WIN32_LEAN_AND_MEAN
+#define WIN32_EXTRA_LEAN
 #include <windows.h>
-#include <heapapi.h>
 
 class ParticleHeap
 {
@@ -18,6 +19,7 @@ public:
 private:
   static constexpr int particle_size = sizeof(Particle);
   static constexpr int max_particles = 30 * 1000;
-  static constexpr int max_heap_size = max_particles * particle_size;
+  static constexpr int heap_overhead = 1024 * 512;
+  static constexpr int max_heap_size = max_particles * particle_size + heap_overhead;
   HANDLE heap_ptr;
 };
