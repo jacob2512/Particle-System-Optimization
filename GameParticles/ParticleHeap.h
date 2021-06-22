@@ -35,5 +35,8 @@ private:
   static constexpr int heap_overhead = 1024 * 512;
   static constexpr int max_heap_size = max_particles * particle_size + heap_overhead;
 
+  static constexpr int block_header = sizeof(bool) + sizeof(Block*);
+  static constexpr int block_size = block_header + particle_size;
+
   HeapHeader* heap_head;
 };

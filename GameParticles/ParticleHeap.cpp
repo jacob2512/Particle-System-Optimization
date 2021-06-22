@@ -7,8 +7,7 @@
 // Marks a variable as unused (to avoid a compile warning)
 #define UNREFERENCED_VARIABLE(P) (void)(P)
 
-#define BLOCK_HEADER sizeof(bool) + sizeof(Block*)
-#define BLOCK_SIZE BLOCK_HEADER + sizeof(Particle)
+
 
 Block* ParticleHeap::FindBlock() const
 {
@@ -26,7 +25,7 @@ Block* ParticleHeap::FindBlock() const
 
 Block* ParticleHeap::GetBlock(Particle* p) const
 {
-  return (Block*)(p - BLOCK_HEADER);
+  return (Block*)(p - block_header);
 }
 
 ParticleHeap::ParticleHeap()
@@ -49,7 +48,7 @@ Particle* ParticleHeap::ParticleAlloc() const
 
   Particle* new_particle = new(malloc(particle_size)) Particle;
 
-  Block* new_block = new(malloc(BLOCK_SIZE)) Block;
+  Block* new_block = new(malloc(block_size)) Block;
 
   if (heap_head->top_block != nullptr)
   {
@@ -63,7 +62,7 @@ Particle* ParticleHeap::ParticleAlloc() const
     heap_head->top_block = new_block;
   }
 
-  heap_head->m_HeapUsedSize += BLOCK_SIZE;
+  heap_head->m_HeapUsedSize += block_size;
 
   return new_particle;
 
@@ -76,6 +75,6 @@ void ParticleHeap::ParticleFree(Particle* p) const
   //Block* block_to_free = GetBlock(p);
   //block_to_free->m_Occupied = false;
 
-  heap_head->m_HeapUsedSize -= BLOCK_SIZE;
+  heap_head->m_HeapUsedSize -= block_size;
   free(p);
 }
