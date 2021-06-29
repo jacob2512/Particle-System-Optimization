@@ -1,33 +1,47 @@
 #pragma once
 
 #include "Particle.h"
+#include <cstdint>
 
 struct Block
 {
   bool m_Occupied;
-  Block* m_NextBlockHeader;
-  Particle* m_Particle;
+  Block* m_PreviousBlock; //free + used block
+  size_t m_BlockSize; // free + used block
+  union 
+  {
+    Block* m_NextFreeBlock; //free block
+    Block* m_TopOfBlockPtr; //used block
+  };
 };
 
 struct HeapHeader
 {
-  Block* top_block;
+  Block* m_FreeHeader;
   size_t m_HeapUsedSize;
+  size_t m_HeapFreeSize;
+  size_t m_HeapSize;
+#pragma warning(push)
+#pragma warning(disable:4200)
+  uint8_t m_FirstHeapByte[0];
+#pragma warning(pop)
 };
 
 class ParticleHeap
 {
 public:
 
-  Block* FindBlock() const; 
-  Block* GetBlock(Particle* p) const;
+  Block* ParticleHeap::FindBlock();
+  Block* ParticleHeap::SplitBlock(size_t size);
 
   ParticleHeap();
   ~ParticleHeap();
-  Particle* ParticleAlloc() const;
-  void ParticleFree(Particle* ptr) const;
+  void* ParticleAlloc(size_t size, size_t alignment);
+  void ParticleFree(void* ptr);
 
+  constexpr int GetParticleSize() { return particle_size; };
   constexpr int GetMaxPatricles() { return max_particles - 1; };
+  constexpr int GetMaxHeapSize() { return max_heap_size; };
 
 private:
   static constexpr int particle_size = sizeof(Particle);
@@ -38,5 +52,6 @@ private:
   static constexpr int block_header = sizeof(bool) + sizeof(Block*);
   static constexpr int block_size = block_header + particle_size;
 
+  void* buffer_ptr;
   HeapHeader* heap_head;
 };

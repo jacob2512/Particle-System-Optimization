@@ -51,22 +51,25 @@ void ParticleEmitter::SpawnParticle()
   if (last_active_particle < particle_heap.GetMaxPatricles())
   {
     // create new particle
-    Particle* newParticle = particle_heap.ParticleAlloc();
+    Particle* newParticle = (Particle*)particle_heap.ParticleAlloc(particle_heap.GetParticleSize(), 16);
 
-    // initialize the particle
-    newParticle->life = life;
-    newParticle->position = start_position;
-    newParticle->velocity = start_velocity;
-    newParticle->scale = start_scale;
+    if (newParticle)
+    {
+      // initialize the particle
+      newParticle->life = life;
+      newParticle->position = start_position;
+      newParticle->velocity = start_velocity;
+      newParticle->scale = start_scale;
 
-    // apply the variance
-    this->Execute(newParticle->position, newParticle->velocity, newParticle->scale);
+      // apply the variance
+      this->Execute(newParticle->position, newParticle->velocity, newParticle->scale);
 
-    // increment count
-    last_active_particle++;
+      // increment count
+      last_active_particle++;
 
-    // add to list
-    this->addParticleToList(newParticle);
+      // add to list
+      this->addParticleToList(newParticle);
+    }
 
   }
 }
