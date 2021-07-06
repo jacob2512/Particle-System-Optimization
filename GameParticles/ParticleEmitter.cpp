@@ -51,8 +51,8 @@ void ParticleEmitter::SpawnParticle()
   if (last_active_particle < particle_heap.GetMaxPatricles())
   {
     // create new particle
-    Particle* newParticle = (Particle*)particle_heap.ParticleAlloc(particle_heap.GetParticleSize(), 16);
-
+    Particle* newParticle = new (particle_heap.ParticleAlloc(particle_heap.GetParticleSize(), 16)) Particle;
+    
     if (newParticle)
     {
       // initialize the particle
@@ -188,6 +188,8 @@ void ParticleEmitter::removeParticleFromList(Particle* p)
       p->next->prev = p->prev;
     }
   }
+
+  p->~Particle();
 
   // bye bye
   particle_heap.ParticleFree(p);
