@@ -98,9 +98,6 @@ void ParticleEmitter::update()
 
   Particle* p = this->headParticle;
 
-  // clear the buffer
-  drawBuffer.clear();
-
   // walk the particles
   while (p != 0)
   {
@@ -123,16 +120,11 @@ void ParticleEmitter::update()
     }
     else
     {
-      // add to buffer
-      drawBuffer.push_back(*p);
-
       // advance to next pointer
       p = p->next;
     }
   }
 
-  // make sure the counts track (asserts go away in release - relax Christos)
-  ASSERT(drawBuffer.size() == (size_t)(last_active_particle + 1));
   last_loop = current_time;
 }
 
@@ -224,17 +216,19 @@ void ParticleEmitter::draw()
   transCameraMatrix.setTransMatrix(cameraMatrix.getTransRow());
 
   // iterate throughout the list of particles
-  std::list<Particle>::iterator it;
-  for (it = drawBuffer.begin(); it != drawBuffer.end(); ++it)
+  Particle* p = this->headParticle;
+
+  // walk the particles
+  while (p != 0)
   {
     // particle position
-    transParticleMatrix.setTransMatrix(it->position);
+    transParticleMatrix.setTransMatrix(p->position);
 
     // rotation matrix
-    rotParticleMatrix.setRotZMatrix(it->rotation);
+    rotParticleMatrix.setRotZMatrix(p->rotation);
 
     // scale Matrix
-    scaleParticleMatrix.setScaleMatrix(it->scale);
+    scaleParticleMatrix.setScaleMatrix(p->scale);
 
     // total transformation of particle
     Matrix resultMatrix;
@@ -249,10 +243,9 @@ void ParticleEmitter::draw()
     // clears or flushes some internal setting, used in debug, but is need for performance reasons
     // magic...  really it's magic.
     glGetError();
-  }
 
-  // done with buffer, clear it.
-  drawBuffer.clear();
+    p = p->next;
+  }
 }
 
 inline static float GenerateRandom()

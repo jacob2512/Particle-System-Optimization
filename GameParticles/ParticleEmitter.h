@@ -34,7 +34,6 @@ private:
 
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;
-  std::list<Particle> drawBuffer;
   Particle* headParticle;
   ParticleHeap particle_heap;
 
