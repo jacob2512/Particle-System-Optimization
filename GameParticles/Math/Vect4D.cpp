@@ -23,19 +23,19 @@ Vect4D Vect4D::norm()
   //partialsum1[1] = z*z + 0
   //partialsum1[2] = x*x + y*y
   //partialsum1[3] = z*z + 0
-  __m128 partialsum1 = _mm_hadd_ps(vectorsquare, vectorsquare);
+  __m128 partialsum = _mm_hadd_ps(vectorsquare, vectorsquare);
 
   //magsquare[0] = x*x + y*y + z*z
   //magsquare[1] = x*x + y*y + z*z
   //magsquare[2] = x*x + y*y + z*z
   //magsquare[3] = x*x + y*y + z*z
-  __m128 magsquare = _mm_hadd_ps(partialsum1, partialsum1);
+  __m128 magsquare = _mm_hadd_ps(partialsum, partialsum);
 
   if (magsquare.m128_f32[0] > 0.0f)
   {
-    //rsqrt = 1/sqrt(magsquare)
-    __m128 rsqrt = _mm_rsqrt_ps(magsquare);
-    __m128 temp = _mm_mul_ps(vector, rsqrt);
+    //reversesqrt = 1/sqrt(magsquare)
+    __m128 reversesqrt = _mm_rsqrt_ps(magsquare);
+    __m128 temp = _mm_mul_ps(vector, reversesqrt);
     temp.m128_f32[3] = 1.0f;
 
     return Vect4D(temp);
