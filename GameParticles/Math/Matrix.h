@@ -4,12 +4,13 @@
 #include "Vect4D.h"
 
 //class size: 64 bytes
-class Matrix
+class alignas(16) Matrix
 {
 public:
 
   Matrix();
-  Matrix(Matrix& t);
+  Matrix(const __m128& _r0, const __m128& _r1, const __m128& _r2, const __m128& _r3);
+  Matrix(const Matrix& t);
   ~Matrix();
   
   Vect4D getTransRow() { return r3; }

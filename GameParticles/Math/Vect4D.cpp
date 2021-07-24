@@ -1,22 +1,46 @@
 #include <math.h>
 
+#include <immintrin.h>
 #include "Vect4D.h"
 
 
+Vect4D::Vect4D(const __m128& vect)
+{
+  _mm_store_ps(&this->x, vect);
+}
+
 Vect4D Vect4D::norm()
 {
-  Vect4D out;
-  float magsquare = this->x * this->x + this->y * this->y + this->z * this->z;
+  //load the vector
+  __m128 vector = _mm_load_ps(&this->x); 
+  vector.m128_f32[3] = 0.0f;
 
-  if (magsquare > 0.0f)
+  //multiply each of the vector terms with itself - x*x, y*y, z*z, 0
+  __m128 vectorsquare = _mm_mul_ps(vector, vector); 
+
+  //add the first 2 terms 
+  //partialsum1[0] = x*x + y*y
+  //partialsum1[1] = z*z + 0
+  //partialsum1[2] = x*x + y*y
+  //partialsum1[3] = z*z + 0
+  __m128 partialsum1 = _mm_hadd_ps(vectorsquare, vectorsquare);
+
+  //magsquare[0] = x*x + y*y + z*z
+  //magsquare[1] = x*x + y*y + z*z
+  //magsquare[2] = x*x + y*y + z*z
+  //magsquare[3] = x*x + y*y + z*z
+  __m128 magsquare = _mm_hadd_ps(partialsum1, partialsum1);
+
+  if (magsquare.m128_f32[0] > 0.0f)
   {
-    float mag = sqrtf(magsquare);
-    out.x = this->x / mag;
-    out.y = this->y / mag;
-    out.z = this->z / mag;
-    out.w = 1.0f;
+    //rsqrt = 1/sqrt(magsquare)
+    __m128 rsqrt = _mm_rsqrt_ps(magsquare);
+    __m128 temp = _mm_mul_ps(vector, rsqrt);
+    temp.m128_f32[3] = 1.0f;
+
+    return Vect4D(temp);
   }
-  return out;
+  return Vect4D();
 }
 
 void Vect4D::set(float tx, float ty, float tz, float tw)
@@ -83,7 +107,11 @@ Vect4D& Vect4D::operator *= (const float sc)
 
 Vect4D Vect4D::Cross(const Vect4D& v) const
 {
-  return Vect4D((y * v.z - z * v.y), (z * v.x - x * v.z), (x * v.y - y * v.x));
+  return Vect4D(
+    (y * v.z - z * v.y), 
+    (z * v.x - x * v.z), 
+    (x * v.y - y * v.x)
+  );
 }
 
 // End of file

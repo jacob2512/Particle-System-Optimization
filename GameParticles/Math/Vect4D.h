@@ -2,13 +2,14 @@
 //
 // This is a 4 dimensional Vect4D class
 #pragma once
+#include <xmmintrin.h>
 
 
 // Forward Declarations
 class Matrix;
 
 //class size: 16 bytes
-class Vect4D
+class alignas(16) Vect4D
 {
 public:
   friend class Matrix;
@@ -16,6 +17,7 @@ public:
   constexpr Vect4D();
   constexpr Vect4D(float tx, float ty, float tz, float tw = 1.0f);
   constexpr Vect4D(const Vect4D& rhs);
+  Vect4D(const __m128& vect);
   ~Vect4D() = default;
 
   Vect4D norm();

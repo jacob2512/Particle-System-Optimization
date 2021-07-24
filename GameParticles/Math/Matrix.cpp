@@ -1,5 +1,6 @@
 #include <Math.h>
 #include "Matrix.h"
+#include <xmmintrin.h>
 
 
 Matrix::Matrix()
@@ -11,7 +12,17 @@ Matrix::Matrix()
   this->r3 = zeroV;
 }
 
-Matrix::Matrix(Matrix& t)
+Matrix::Matrix(const __m128& _r0, const __m128& _r1, const __m128& _r2, const __m128& _r3)
+  :r0(_r0)
+  , r1(_r1)
+  , r2(_r2)
+  , r3(_r3)
+{
+
+}
+
+
+Matrix::Matrix(const Matrix& t)
 { // copy constructor
   this->r0 = t.r0;
   this->r1 = t.r1;
@@ -153,29 +164,53 @@ void Matrix::setRotZMatrix(float az)
 
 Matrix Matrix::operator*(const Matrix& rhs) const
 { // matrix multiplications
-  Matrix mult;
 
-  mult.r0.x = (this->r0.x * rhs.r0.x) + (this->r0.y * rhs.r1.x) + (this->r0.z * rhs.r2.x) + (this->r0.w * rhs.r3.x);
-  mult.r0.y = (this->r0.x * rhs.r0.y) + (this->r0.y * rhs.r1.y) + (this->r0.z * rhs.r2.y) + (this->r0.w * rhs.r3.y);
-  mult.r0.z = (this->r0.x * rhs.r0.z) + (this->r0.y * rhs.r1.z) + (this->r0.z * rhs.r2.z) + (this->r0.w * rhs.r3.z);
-  mult.r0.w = (this->r0.x * rhs.r0.w) + (this->r0.y * rhs.r1.w) + (this->r0.z * rhs.r2.w) + (this->r0.w * rhs.r3.w);
+  __m128 r0x = _mm_load_ps1(&r0.x);
+  __m128 r0y = _mm_load_ps1(&r0.y);
+  __m128 r0z = _mm_load_ps1(&r0.z);
+  __m128 r0w = _mm_load_ps1(&r0.w);
 
-  mult.r1.x = (this->r1.x * rhs.r0.x) + (this->r1.y * rhs.r1.x) + (this->r1.z * rhs.r2.x) + (this->r1.w * rhs.r3.x);
-  mult.r1.y = (this->r1.x * rhs.r0.y) + (this->r1.y * rhs.r1.y) + (this->r1.z * rhs.r2.y) + (this->r1.w * rhs.r3.y);
-  mult.r1.z = (this->r1.x * rhs.r0.z) + (this->r1.y * rhs.r1.z) + (this->r1.z * rhs.r2.z) + (this->r1.w * rhs.r3.z);
-  mult.r1.w = (this->r1.x * rhs.r0.w) + (this->r1.y * rhs.r1.w) + (this->r1.z * rhs.r2.w) + (this->r1.w * rhs.r3.w);
+  __m128 r1x = _mm_load_ps1(&r1.x);
+  __m128 r1y = _mm_load_ps1(&r1.y);
+  __m128 r1z = _mm_load_ps1(&r1.z);
+  __m128 r1w = _mm_load_ps1(&r1.w);
 
-  mult.r2.x = (this->r2.x * rhs.r0.x) + (this->r2.y * rhs.r1.x) + (this->r2.z * rhs.r2.x) + (this->r2.w * rhs.r3.x);
-  mult.r2.y = (this->r2.x * rhs.r0.y) + (this->r2.y * rhs.r1.y) + (this->r2.z * rhs.r2.y) + (this->r2.w * rhs.r3.y);
-  mult.r2.z = (this->r2.x * rhs.r0.z) + (this->r2.y * rhs.r1.z) + (this->r2.z * rhs.r2.z) + (this->r2.w * rhs.r3.z);
-  mult.r2.w = (this->r2.x * rhs.r0.w) + (this->r2.y * rhs.r1.w) + (this->r2.z * rhs.r2.w) + (this->r2.w * rhs.r3.w);
+  __m128 r2x = _mm_load_ps1(&r2.x);
+  __m128 r2y = _mm_load_ps1(&r2.y);
+  __m128 r2z = _mm_load_ps1(&r2.z);
+  __m128 r2w = _mm_load_ps1(&r2.w);
 
-  mult.r3.x = (this->r3.x * rhs.r0.x) + (this->r3.y * rhs.r1.x) + (this->r3.z * rhs.r2.x) + (this->r3.w * rhs.r3.x);
-  mult.r3.y = (this->r3.x * rhs.r0.y) + (this->r3.y * rhs.r1.y) + (this->r3.z * rhs.r2.y) + (this->r3.w * rhs.r3.y);
-  mult.r3.z = (this->r3.x * rhs.r0.z) + (this->r3.y * rhs.r1.z) + (this->r3.z * rhs.r2.z) + (this->r3.w * rhs.r3.z);
-  mult.r3.w = (this->r3.x * rhs.r0.w) + (this->r3.y * rhs.r1.w) + (this->r3.z * rhs.r2.w) + (this->r3.w * rhs.r3.w);
+  __m128 r3x = _mm_load_ps1(&r3.x);
+  __m128 r3y = _mm_load_ps1(&r3.y);
+  __m128 r3z = _mm_load_ps1(&r3.z);
+  __m128 r3w = _mm_load_ps1(&r3.w);
 
-  return mult;
+  __m128 rhs_r0 = _mm_load_ps(&rhs.r0.x);
+  __m128 rhs_r1 = _mm_load_ps(&rhs.r1.x);
+  __m128 rhs_r2 = _mm_load_ps(&rhs.r2.x);
+  __m128 rhs_r3 = _mm_load_ps(&rhs.r3.x);
+
+  __m128 mult_r0 = _mm_add_ps(
+    _mm_add_ps(_mm_mul_ps(r0x, rhs_r0), _mm_mul_ps(r0y, rhs_r1)),
+    _mm_add_ps(_mm_mul_ps(r0z,rhs_r2), _mm_mul_ps(r0w, rhs_r3))
+    );
+
+  __m128 mult_r1 = _mm_add_ps(
+    _mm_add_ps(_mm_mul_ps(r1x, rhs_r0), _mm_mul_ps(r1y, rhs_r1)),
+    _mm_add_ps(_mm_mul_ps(r1z, rhs_r2), _mm_mul_ps(r1w, rhs_r3))
+  );
+
+  __m128 mult_r2 = _mm_add_ps(
+    _mm_add_ps(_mm_mul_ps(r2x, rhs_r0), _mm_mul_ps(r2y, rhs_r1)),
+    _mm_add_ps(_mm_mul_ps(r2z, rhs_r2), _mm_mul_ps(r2w, rhs_r3))
+  );
+
+  __m128 mult_r3 = _mm_add_ps(
+    _mm_add_ps(_mm_mul_ps(r3x, rhs_r0), _mm_mul_ps(r3y, rhs_r1)),
+    _mm_add_ps(_mm_mul_ps(r3z, rhs_r2), _mm_mul_ps(r3w, rhs_r3))
+  );
+
+  return Matrix(mult_r0, mult_r1, mult_r2, mult_r3);
 }
 
 // End of file
