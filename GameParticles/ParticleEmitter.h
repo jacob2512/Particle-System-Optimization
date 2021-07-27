@@ -17,8 +17,8 @@ public:
   void update();
   void draw();
 
-  void addParticleToList(Particle* p);
-  void removeParticleFromList(Particle* p);
+  void addParticleToArray(Particle* p);
+  void removeParticleFromArray(int index);
 
   void Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc);
 
@@ -30,11 +30,10 @@ private:
 
   float	last_spawn;
   float	last_loop;
-  int		last_active_particle = -1;
+  int		particle_array_size;
 
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;
-  Particle* headParticle;
+  Particle** particle_array;
   ParticleHeap particle_heap;
-
 };

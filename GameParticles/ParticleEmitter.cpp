@@ -31,10 +31,10 @@ constexpr Vect4D	pos_variance( 1.0f, 1.0f, 1.0f, 1.0f );
 
 ParticleEmitter::ParticleEmitter()
   : last_spawn(globalTimer::getTimerInSec()),
-  last_loop(globalTimer::getTimerInSec()),
-  headParticle(0)
+  last_loop(globalTimer::getTimerInSec())
 {
-  // nothing to do
+  particle_array = new Particle*[particle_heap.GetMaxPatricles()];
+  particle_array_size = -1;
 }
 
 
@@ -48,7 +48,7 @@ ParticleEmitter::~ParticleEmitter()
 void ParticleEmitter::SpawnParticle()
 {
   // create another particle if there are ones free
-  if (last_active_particle < particle_heap.GetMaxPatricles())
+  if (particle_array_size < particle_heap.GetMaxPatricles())
   {
     // create new particle
     Particle* newParticle = new (particle_heap.ParticleAlloc(particle_heap.GetParticleSize(), 16)) Particle;
@@ -64,11 +64,8 @@ void ParticleEmitter::SpawnParticle()
       // apply the variance
       this->Execute(newParticle->position, newParticle->velocity, newParticle->scale);
 
-      // increment count
-      last_active_particle++;
-
-      // add to list
-      this->addParticleToList(newParticle);
+      // add to array
+      this->addParticleToArray(newParticle);
     }
 
   }
@@ -96,90 +93,41 @@ void ParticleEmitter::update()
   // total elapsed
   time_elapsed = current_time - last_loop;
 
-  Particle* p = this->headParticle;
-
   // walk the particles
-  while (p != 0)
+  for (int i = particle_array_size; i >= 0; i--)
   {
+    Particle* p = particle_array[i];
+
     // call every particle and update its position 
     p->Update(time_elapsed);
 
     // if it's live is greater that the max_life 
-    // and there is some on the list
-    // remove node
-    if ((p->life > max_life) && (last_active_particle > 0))
+    // and there are some in the array
+    // remove element
+    if ((p->life > max_life) && (i > 0))
     {
-      // particle to remove
-      Particle* s = p;
-
-      // need to squirrel it away.
-      p = p->next;
-
-      // remove last node
-      this->removeParticleFromList(s);
-    }
-    else
-    {
-      // advance to next pointer
-      p = p->next;
+      this->removeParticleFromArray(i);
     }
   }
 
   last_loop = current_time;
 }
 
-void ParticleEmitter::addParticleToList(Particle* p)
+void ParticleEmitter::addParticleToArray(Particle* p)
 {
-  ASSERT(p);
-  if (this->headParticle == 0)
-  { // first on list
-    this->headParticle = p;
-    p->next = 0;
-    p->prev = 0;
-  }
-  else
-  { // add to front of list
-    headParticle->prev = p;
-    p->next = headParticle;
-    p->prev = 0;
-    headParticle = p;
-  }
+  // increment count
+  particle_array_size++;
 
+  ASSERT(p);
+  particle_array[particle_array_size] = p;
 }
 
-void ParticleEmitter::removeParticleFromList(Particle* p)
+void ParticleEmitter::removeParticleFromArray(int index)
 {
+  Particle* p = particle_array[index];
+
   // make sure we are not screwed with a null pointer
   ASSERT(p);
-
-  if (p->prev == 0)
-  {
-    if (p->next == 0)
-    {
-      // only one on the list
-      this->headParticle = 0;
-    }
-    else
-    {
-      // first on the list
-      p->next->prev = 0;
-      this->headParticle = p->next;
-    }
-  }
-  else //if (p->prev != 0)
-  {
-    if (p->next == 0)
-    {
-      // last on the list 
-      p->prev->next = 0;
-    }
-    else
-    {
-      // middle of the list
-      p->prev->next = p->next;
-      p->next->prev = p->prev;
-    }
-  }
 
   p->~Particle();
 
@@ -187,7 +135,7 @@ void ParticleEmitter::removeParticleFromList(Particle* p)
   particle_heap.ParticleFree(p);
 
   // update the number of particles
-  last_active_particle--;
+  particle_array_size--;
 }
 
 void ParticleEmitter::draw()
@@ -215,12 +163,11 @@ void ParticleEmitter::draw()
   cameraMatrix.setFromFloatArray(cameraFloatArray);
   transCameraMatrix.setTransMatrix(cameraMatrix.getTransRow());
 
-  // iterate throughout the list of particles
-  Particle* p = this->headParticle;
-
   // walk the particles
-  while (p != 0)
+  for (int i = particle_array_size; i >= 0; i--)
   {
+    Particle* p = particle_array[i];
+
     // particle position
     transParticleMatrix.setTransMatrix(p->position);
 
@@ -243,8 +190,6 @@ void ParticleEmitter::draw()
     // clears or flushes some internal setting, used in debug, but is need for performance reasons
     // magic...  really it's magic.
     glGetError();
-
-    p = p->next;
   }
 }
 
