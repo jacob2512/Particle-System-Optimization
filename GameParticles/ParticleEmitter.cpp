@@ -31,9 +31,9 @@ constexpr Vect4D	pos_variance( 1.0f, 1.0f, 1.0f, 1.0f );
 
 ParticleEmitter::ParticleEmitter()
   : last_spawn(globalTimer::getTimerInSec()),
-  last_loop(globalTimer::getTimerInSec())
+  last_loop(globalTimer::getTimerInSec()),
+  particle_array()
 {
-  particle_array = new Particle*[particle_heap.GetMaxPatricles()];
   particle_array_size = -1;
 }
 

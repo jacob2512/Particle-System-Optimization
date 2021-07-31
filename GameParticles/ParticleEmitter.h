@@ -24,16 +24,17 @@ public:
 
 private:
 
-  static constexpr float life = 0.0f;
+  static constexpr float  life = 0.0f;
   static constexpr float	max_life = 10.0f;
   static constexpr float	spawn_frequency = 0.0000001f;
 
   float	last_spawn;
   float	last_loop;
-  int		particle_array_size;
+  int		particle_array_size; //change to 0 -> should be in ring buffer
 
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;
-  Particle** particle_array;
+
+  Particle* particle_array[ParticleHeap::GetMaxPatricles()];
   ParticleHeap particle_heap;
 };

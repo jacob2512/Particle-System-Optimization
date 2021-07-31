@@ -12,7 +12,7 @@
 
 ParticleHeap::ParticleHeap()
 {
-  buffer_ptr = malloc(max_heap_size + 15);
+  buffer_ptr = malloc(max_heap_size);
   void* aligned_buffer_ptr = (void*)ALIGN_ARB(buffer_ptr,16);
 
   heap_head = (HeapHeader*)aligned_buffer_ptr;

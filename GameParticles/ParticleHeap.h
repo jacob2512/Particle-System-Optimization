@@ -38,12 +38,12 @@ public:
   void ParticleFree(void* ptr);
 
   constexpr int GetParticleSize() { return particle_size; };
-  constexpr int GetMaxPatricles() { return max_particles - 1; };
+  static constexpr int GetMaxPatricles() { return max_particles - 1; };
 
 private:
   static constexpr int particle_size = sizeof(Particle);
   static constexpr int max_particles = 30 * 1000;
-  static constexpr int heap_overhead = 1024 * 1024;
+  static constexpr int heap_overhead = 1024 * 1024 + 15;
   static constexpr int max_heap_size = max_particles * particle_size + heap_overhead;
 
   static constexpr int block_header = sizeof(bool) + sizeof(BlockHeader*);
