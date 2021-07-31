@@ -50,6 +50,7 @@
     <ClInclude Include="Settings.h" />
     <ClInclude Include="ParticleHeap.h" />
     <ClInclude Include="CustomAssert.h" />
+    <ClInclude Include="RingBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DO_NOT_MODIFY\Event\WinEventHandler.cpp">
@@ -72,5 +73,6 @@
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="ParticleHeap.cpp" />
     <ClCompile Include="CustomAssert.cpp" />
+    <ClCompile Include="RingBuffer.cpp" />
   </ItemGroup>
 </Project>
