@@ -34,7 +34,7 @@ ParticleEmitter::ParticleEmitter()
   last_loop(globalTimer::getTimerInSec()),
   particle_array()
 {
-  particle_array_size = -1;
+  particle_array_size = 0;
 }
 
 
@@ -94,7 +94,7 @@ void ParticleEmitter::update()
   time_elapsed = current_time - last_loop;
 
   // walk the particles
-  for (int i = particle_array_size; i >= 0; i--)
+  for (int i = particle_array_size; i > 0; i--)
   {
     Particle* p = particle_array[i];
 
@@ -164,7 +164,7 @@ void ParticleEmitter::draw()
   transCameraMatrix.setTransMatrix(cameraMatrix.getTransRow());
 
   // walk the particles
-  for (int i = particle_array_size; i >= 0; i--)
+  for (int i = particle_array_size; i > 0; i--)
   {
     Particle* p = particle_array[i];
 

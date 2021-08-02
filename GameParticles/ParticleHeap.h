@@ -38,7 +38,7 @@ public:
   void ParticleFree(void* ptr);
 
   constexpr int GetParticleSize() { return particle_size; };
-  static constexpr int GetMaxPatricles() { return max_particles - 1; };
+  static constexpr int GetMaxPatricles() { return max_particles; };
 
 private:
   static constexpr int particle_size = sizeof(Particle);
