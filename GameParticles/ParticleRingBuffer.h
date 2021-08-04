@@ -2,11 +2,11 @@
 
 #include "Particle.h"
 
-class RingBuffer
+class ParticleRingBuffer
 {
 public:
-  RingBuffer(size_t size);
-  ~RingBuffer();
+  ParticleRingBuffer(size_t size);
+  ~ParticleRingBuffer();
   Particle* Allocate();
   void Remove();
   bool IsEmpty() const { return active_count == 0; }

@@ -93,7 +93,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="ParticleHeap.h" />
-    <ClInclude Include="RingBuffer.h" />
+    <ClInclude Include="ParticleRingBuffer.h" />
     <ClInclude Include="Settings.h" />
   </ItemGroup>
   <ItemGroup>
@@ -107,7 +107,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="ParticleHeap.cpp" />
-    <ClCompile Include="RingBuffer.cpp" />
+    <ClCompile Include="ParticleRingBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

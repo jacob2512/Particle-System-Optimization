@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Math\Matrix.h"
-#include "RingBuffer.h"
+#include "ParticleRingBuffer.h"
 #include "ParticleHeap.h"
 #include "Particle.h"
 
@@ -31,5 +31,5 @@ private:
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;
 
-  RingBuffer particle_array;
+  ParticleRingBuffer particle_array;
 };

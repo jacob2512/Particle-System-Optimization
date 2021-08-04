@@ -1,11 +1,11 @@
-#include "RingBuffer.h"
+#include "ParticleRingBuffer.h"
 #include "ParticleHeap.h"
 #include <cassert>
 #include <new>
 
-RingBuffer::RingBuffer(size_t max_size)
+ParticleRingBuffer::ParticleRingBuffer(size_t max_size)
 {
-  assert(max_size != 0);
+  assert(max_size > 0);
 
   buffer_array = (Particle*)particle_heap.ParticleAlloc(particle_heap.GetParticleSize(), 16);
 
@@ -14,7 +14,7 @@ RingBuffer::RingBuffer(size_t max_size)
   max_array_size = max_size;
 }
 
-RingBuffer::~RingBuffer()
+ParticleRingBuffer::~ParticleRingBuffer()
 {
   while (!IsEmpty())
   {
@@ -27,7 +27,7 @@ RingBuffer::~RingBuffer()
   }
 }
 
-Particle* RingBuffer::Allocate()
+Particle* ParticleRingBuffer::Allocate()
 {
   if (IsFull())
   {
@@ -40,7 +40,7 @@ Particle* RingBuffer::Allocate()
   return new_particle;
 }
 
-void RingBuffer::Remove()
+void ParticleRingBuffer::Remove()
 {
   if (IsEmpty())
   {
