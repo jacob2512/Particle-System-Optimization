@@ -23,7 +23,4 @@ private:
   float	rotation;
   float	rotation_velocity;
   static constexpr float v_offset = 0.05f;
-
-  Particle* next;
-  Particle* prev;
 };

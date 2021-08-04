@@ -32,9 +32,8 @@ constexpr Vect4D	pos_variance( 1.0f, 1.0f, 1.0f, 1.0f );
 ParticleEmitter::ParticleEmitter()
   : last_spawn(globalTimer::getTimerInSec()),
   last_loop(globalTimer::getTimerInSec()),
-  particle_array()
+  particle_array(particle_heap.GetMaxParticles())
 {
-  particle_array_size = 0;
 }
 
 
@@ -45,14 +44,10 @@ ParticleEmitter::~ParticleEmitter()
 }
 
 
-void ParticleEmitter::SpawnParticle()
+void ParticleEmitter::AddParticleToArray()
 {
-  // create another particle if there are ones free
-  if (particle_array_size < particle_heap.GetMaxPatricles())
-  {
-    // create new particle
-    Particle* newParticle = new (particle_heap.ParticleAlloc(particle_heap.GetParticleSize(), 16)) Particle;
-    
+    Particle* newParticle = particle_array.Allocate();
+
     if (newParticle)
     {
       // initialize the particle
@@ -63,12 +58,7 @@ void ParticleEmitter::SpawnParticle()
 
       // apply the variance
       this->Execute(newParticle->position, newParticle->velocity, newParticle->scale);
-
-      // add to array
-      this->addParticleToArray(newParticle);
     }
-
-  }
 }
 
 void ParticleEmitter::update()
@@ -83,7 +73,7 @@ void ParticleEmitter::update()
   while (spawn_frequency < time_elapsed)
   {
     // spawn a particle
-    this->SpawnParticle();
+    AddParticleToArray();
     // adjust time
     time_elapsed -= spawn_frequency;
     // last time
@@ -94,9 +84,9 @@ void ParticleEmitter::update()
   time_elapsed = current_time - last_loop;
 
   // walk the particles
-  for (int i = particle_array_size; i > 0; i--)
+  for (int i = 0; i < particle_array.GetActiveCount(); i++)
   {
-    Particle* p = particle_array[i];
+    Particle* p = particle_array.GetAt(i);
 
     // call every particle and update its position 
     p->Update(time_elapsed);
@@ -104,38 +94,14 @@ void ParticleEmitter::update()
     // if it's live is greater that the max_life 
     // and there are some in the array
     // remove element
-    if ((p->life > max_life) && (i > 0))
+    if ((p->life > max_life))
     {
-      this->removeParticleFromArray(i);
+      particle_array.Remove();
+      i--;
     }
   }
 
   last_loop = current_time;
-}
-
-void ParticleEmitter::addParticleToArray(Particle* p)
-{
-  // increment count
-  particle_array_size++;
-
-  ASSERT(p);
-  particle_array[particle_array_size] = p;
-}
-
-void ParticleEmitter::removeParticleFromArray(int index)
-{
-  Particle* p = particle_array[index];
-
-  // make sure we are not screwed with a null pointer
-  ASSERT(p);
-
-  p->~Particle();
-
-  // bye bye
-  particle_heap.ParticleFree(p);
-
-  // update the number of particles
-  particle_array_size--;
 }
 
 void ParticleEmitter::draw()
@@ -164,9 +130,9 @@ void ParticleEmitter::draw()
   transCameraMatrix.setTransMatrix(cameraMatrix.getTransRow());
 
   // walk the particles
-  for (int i = particle_array_size; i > 0; i--)
+  for (int i = particle_array.GetActiveCount()-1; i >= 0; i--)
   {
-    Particle* p = particle_array[i];
+    Particle* p = particle_array.GetAt(i);
 
     // particle position
     transParticleMatrix.setTransMatrix(p->position);

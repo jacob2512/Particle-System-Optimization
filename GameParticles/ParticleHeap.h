@@ -37,8 +37,8 @@ public:
   void* ParticleAlloc(size_t size, size_t alignment);
   void ParticleFree(void* ptr);
 
-  constexpr int GetParticleSize() { return particle_size; };
-  static constexpr int GetMaxPatricles() { return max_particles; };
+  static constexpr int GetParticleSize() { return particle_size; };
+  static constexpr int GetMaxParticles() { return max_particles; };
 
 private:
   static constexpr int particle_size = sizeof(Particle);
@@ -52,3 +52,5 @@ private:
   void* buffer_ptr;
   HeapHeader* heap_head;
 };
+
+extern ParticleHeap particle_heap;

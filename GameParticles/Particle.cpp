@@ -12,8 +12,6 @@ Particle::Particle()
   this->scale.set(1.0f, 1.0f, 1.0f);
   this->rotation = 0.0f;
   this->rotation_velocity = 1.005f;
-  this->prev = 0;
-  this->next = 0;
 }
 
 Particle::~Particle()

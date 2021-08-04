@@ -10,6 +10,8 @@
 // Aligns (pads) size to a given alignment
 #define ALIGN_ARB(n, a) (((size_t)(n) + ((size_t)(a)-1)) & ~(size_t)((a)-1))  // 'a' needs to be a power of 2
 
+ParticleHeap particle_heap;
+
 ParticleHeap::ParticleHeap()
 {
   buffer_ptr = malloc(max_heap_size);

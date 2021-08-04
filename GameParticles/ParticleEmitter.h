@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math\Matrix.h"
+#include "RingBuffer.h"
 #include "ParticleHeap.h"
 #include "Particle.h"
 
@@ -13,14 +14,10 @@ public:
   ParticleEmitter();
   ~ParticleEmitter();
 
-  void SpawnParticle();
+  void AddParticleToArray();
+  void Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc);
   void update();
   void draw();
-
-  void addParticleToArray(Particle* p);
-  void removeParticleFromArray(int index);
-
-  void Execute(Vect4D& pos, Vect4D& vel, Vect4D& sc);
 
 private:
 
@@ -30,11 +27,9 @@ private:
 
   float	last_spawn;
   float	last_loop;
-  int		particle_array_size; //change to 0 -> should be in ring buffer
 
   // added for speed efficiency
   static constexpr float	scale_variance = 2.5f;
 
-  Particle* particle_array[ParticleHeap::GetMaxPatricles()];
-  ParticleHeap particle_heap;
+  RingBuffer particle_array;
 };
