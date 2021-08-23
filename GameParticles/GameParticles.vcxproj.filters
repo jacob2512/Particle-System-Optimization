@@ -51,7 +51,7 @@
     <ClInclude Include="ParticleHeap.h" />
     <ClInclude Include="CustomAssert.h" />
     <ClInclude Include="ParticleRingBuffer.h" />
-    <ClInclude Include="ParticleThread.h" />
+    <ClInclude Include="ParticleJobSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DO_NOT_MODIFY\Event\WinEventHandler.cpp">
@@ -75,6 +75,6 @@
     <ClCompile Include="ParticleHeap.cpp" />
     <ClCompile Include="CustomAssert.cpp" />
     <ClCompile Include="ParticleRingBuffer.cpp" />
-    <ClCompile Include="ParticleThread.cpp" />
+    <ClCompile Include="ParticleJobSystem.cpp" />
   </ItemGroup>
 </Project>
