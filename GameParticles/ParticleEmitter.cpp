@@ -5,6 +5,7 @@
 #include "CustomAssert.h"
 
 #include "ParticleEmitter.h"
+#include "ParticleJobSystem.h"
 
 static constexpr unsigned char squareColors[] =
 {
@@ -83,13 +84,12 @@ void ParticleEmitter::update()
   // total elapsed
   time_elapsed = current_time - last_loop;
 
+  particle_job_system.KickUpdateJobs(&particle_array, time_elapsed);
+
   // walk the particles
   for (int i = 0; i < particle_array.GetActiveCount(); i++)
   {
     Particle* p = particle_array.GetAt(i);
-
-    // call every particle and update its position 
-    p->Update(time_elapsed);
 
     // if it's live is greater that the max_life 
     // and there are some in the array
